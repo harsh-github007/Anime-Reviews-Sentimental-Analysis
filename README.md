@@ -1,9 +1,9 @@
-<h2>Anime Comments Scraped from https://myanimelist.net
+<h2>Anime Comments Scraped from https://myanimelist.net</h2>
 
 <h1>Overview<br>
 The "Anime Comments Scraped from https://myanimelist.net" dataset is a collection of comments and reviews on various anime titles sourced from the popular anime review website MyAnimeList. The dataset contains over 30,000 comments across various anime titles.<br>
 
-Data Description<br>
+<h1>Data Description</h1><br>
 The dataset consists of five columns:<br>
 • S.no: Unique identifier for each comment in the dataset.<br>
 • Title: Name of the anime being reviewed.<br>
@@ -11,7 +11,7 @@ The dataset consists of five columns:<br>
 • User name: The username of the person who posted the comment.<br>
 • Text: The actual comment or review left by the user on the anime in question.<br>
 
-<h1>Potential Use Cases<br>
+<h1>Potential Use Cases</h1><br>
 The "Anime Comments Scraped from https://myanimelist.net" dataset is a valuable resource for anyone interested in exploring the world of anime. Some of the potential use cases of the dataset are:<br>
 
 • Anime Analysis: Researchers and analysts can use the dataset to gain insights into the opinions and sentiments of anime fans towards various titles. For example, one can use the dataset to analyze which anime titles are the most popular or controversial among fans, and why. Similarly, researchers can analyze how the opinions and sentiments of anime fans have changed over time for specific anime titles.<br>
