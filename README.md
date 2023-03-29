@@ -1,9 +1,9 @@
 ## Anime Comments Scraped from https://myanimelist.net
 
-#Overview
+#Overview<br>
 The "Anime Comments Scraped from https://myanimelist.net" dataset is a collection of comments and reviews on various anime titles sourced from the popular anime review website MyAnimeList. The dataset contains over 30,000 comments across various anime titles.<br>
 
-#Data Description
+#Data Description<br>
 The dataset consists of five columns:<br>
 • S.no: Unique identifier for each comment in the dataset.<br>
 • Title: Name of the anime being reviewed.<br>
