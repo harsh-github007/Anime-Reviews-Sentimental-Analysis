@@ -21,3 +21,9 @@ The "Anime Comments Scraped from https://myanimelist.net" dataset is a valuable 
 • Sentiment Analysis: The dataset can also be used to build natural language processing (NLP) models for sentiment analysis. By training NLP models on the comments and reviews in the dataset, researchers can build algorithms that automatically classify comments as positive, negative, or neutral. These models can then be used to analyze large volumes of comments and reviews quickly and efficiently.<br>
 
 • Network Analysis: The dataset can be used to perform network analyses of the relationships between anime titles and users. By analyzing which anime titles are reviewed or commented on by which users, one can identify clusters of users with similar tastes in anime. These clusters can then be used to build communities of anime fans with similar tastes and to facilitate discussions and recommendations between these users.<br>
+
+<h1>Acknowledgements</h1><br>
+The dataset was scraped using the Octoparse software, which is a powerful web scraping tool used to extract data from websites. We acknowledge the creators and maintainers of the MyAnimeList website for providing an excellent platform for anime enthusiasts to share their opinions and reviews on various anime titles.
+
+<h1>License</h1><br>
+This dataset is released under the CC BY-SA 4.0 license. If you use this dataset, please provide attribution to the source by citing this repository.
