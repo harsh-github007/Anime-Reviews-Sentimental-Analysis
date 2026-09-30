@@ -95,8 +95,10 @@ def chart_titles(by_title, path, n=15):
     plt.close(fig)
 
 
-def write_markdown(res, info, by_title, out):
+def write_markdown(res, info, by_title, out, scrape=None):
     o, m, b = res["original"], res["methods"], res["binary"]
+    when = (f"Reviews of the {scrape['chart']} chart on MyAnimeList, downloaded {scrape['scraped'][:10]}"
+            if scrape else "One snapshot of MyAnimeList reviews")
     best = res["best_method"]
     lines = [
         "# Results", "",
@@ -104,6 +106,11 @@ def write_markdown(res, info, by_title, out):
         + ", ".join(f"{k} ({v:,})" for k, v in res["counts"].items()) + ".",
         f"Dropped before analysis: {info.get('unknown_tag', 0):,} with no verdict tag, {info.get('empty_text', 0):,} empty, "
         f"{info.get('duplicates', 0):,} duplicates.", "",
+        *(["## The anime", "",
+            f"The top {len(scrape['anime'])} of MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]}, with every review of each (up to 500):", "",
+            "| # | Anime | MAL score | Reviews |", "| ---: | --- | ---: | ---: |",
+            *[f"| {a['top_rank']} | {a['title']} | {a['score'] if a['score'] is not None else '–'} | {a.get('reviews', 0):,} |" for a in scrape["anime"]],
+            ""] if scrape else []),
         "## What TextBlob says", "",
         f"TextBlob calls {pct(o['textblob_positive_share'], 1)} of reviews positive. "
         f"The reviewers themselves recommend {pct(o['actual_recommended_share'], 1)} of the shows they review, "
@@ -146,13 +153,13 @@ def write_markdown(res, info, by_title, out):
               f"- **Recommended:** {', '.join(tw['Recommended'])}",
               f"- **Not Recommended:** {', '.join(tw['Not Recommended'])}", "",
               "## Caveats", "",
-              "- One scrape of MyAnimeList in early 2023. Reviewers who write reviews are not all viewers, so these rates describe reviews, not audiences.",
+              f"- {when}. Reviewers who write reviews are not all viewers, so these rates describe reviews, not audiences.",
               "- A tag is a single summary of a long, often mixed review; some disagreement with any method is expected.",
               "- Scores come from English text only; reviews in other languages were left as they are.", ""]
     (out / "results.md").write_text("\n".join(lines))
 
 
-def report(res, info, by_title, dist, out="results"):
+def report(res, info, by_title, dist, out="results", scrape=None):
     out = Path(out)
     (out / "figures").mkdir(parents=True, exist_ok=True)
     chart_methods(res, out / "figures" / "methods.png")
@@ -161,4 +168,6 @@ def report(res, info, by_title, dist, out="results"):
         chart_titles(by_title, out / "figures" / "titles.png")
     by_title.to_csv(out / "by_show.csv", index=False)
     (out / "metrics.json").write_text(json.dumps({"data": info, **res}, indent=2, default=float))
-    write_markdown(res, info, by_title, out)
+    if scrape:
+        (out / "anime.json").write_text(json.dumps(scrape, indent=2))
+    write_markdown(res, info, by_title, out, scrape)

@@ -144,3 +144,83 @@ def test_cli_stops_without_verdicts(tmp_path):
     pd.DataFrame({"Title": ["a"] * 30, "Tag": ["Recommended"] * 30, "text": [f"t{i}" for i in range(30)]}).to_csv(path, index=False)
     with pytest.raises(SystemExit, match="verdicts"):
         main(["--data", str(path), "--out", str(tmp_path / "o")])
+
+
+# ------------------------------------------------------------------ scraper (fake Jikan)
+
+import io
+import urllib.error
+
+from animesent import scrape as sc
+
+
+def fake_jikan(per_anime=45, fail_first=False):
+    calls = {"n": 0}
+    rng = np.random.default_rng(3)
+
+    def get_json(url):
+        calls["n"] += 1
+        if "/top/anime" in url:
+            return {"data": [{"mal_id": 100 + i, "title": f"Show {i}", "title_english": None if i % 2 else f"Show {i} (EN)",
+                              "score": 8.0 + i / 10, "members": 1000 * i, "season": "summer", "year": 2026} for i in range(12)]}
+        anime_id = int(url.split("/anime/")[1].split("/")[0])
+        page = int(url.split("page=")[1].split("&")[0])
+        start, end = (page - 1) * 20, min(page * 20, per_anime)
+        data = [{"mal_id": anime_id * 1000 + k, "date": "2026-09-01T10:00:00+00:00", "review": f"Review {k} of {anime_id}. " + ("loved it" if k % 3 else "boring"),
+                 "score": int(rng.integers(1, 11)), "tags": ["Recommended"] if k % 3 else ["Not Recommended"],
+                 "is_preliminary": k % 10 == 0, "is_spoiler": False, "episodes_watched": 12,
+                 "reactions": {"overall": k}, "user": {"username": f"u{k}"}} for k in range(start, end)]
+        return {"data": data, "pagination": {"has_next_page": end < per_anime, "last_visible_page": 3}}
+    return get_json, calls
+
+
+def test_scrape_takes_the_top_n_and_pages_through_reviews(tmp_path):
+    get_json, calls = fake_jikan(per_anime=45)
+    rows, info = sc.scrape(top=10, out=tmp_path / "reviews.csv", get_json=get_json, pause=0, sleep=lambda s: None)
+    assert len(info["anime"]) == 10 and len(rows) == 10 * 45
+    assert calls["n"] == 1 + 10 * 3  # one chart call, three review pages per anime
+    assert info["anime"][0]["title"] == "Show 0 (EN)" and info["anime"][1]["title"] == "Show 1"
+    assert (tmp_path / "scrape_info.json").exists()
+    df, load_info = load(tmp_path / "reviews.csv")  # the analysis reads the scraper's file as it is
+    assert load_info["kept"] == 450 and set(df["label"]) == {"Recommended", "Not Recommended"}
+    assert df["preliminary"].sum() == 10 * 5  # reviews 0, 10, 20, 30, 40 of each anime
+
+
+def test_scrape_respects_the_page_cap(tmp_path):
+    get_json, _ = fake_jikan(per_anime=100)
+    rows, _ = sc.scrape(top=2, max_pages=2, out=tmp_path / "r.csv", get_json=get_json, pause=0, sleep=lambda s: None)
+    assert len(rows) == 2 * 40
+
+
+def test_get_retries_jikan_timeouts():
+    calls = []
+
+    def opener(req, timeout):
+        calls.append(1)
+        if len(calls) < 3:
+            raise urllib.error.HTTPError(req.full_url, 504, "Gateway Timeout", {}, None)
+        return io.BytesIO(b'{"data": []}')
+
+    assert sc.get("https://api.jikan.moe/v4/x", opener=opener, sleep=lambda s: None) == {"data": []}
+    assert len(calls) == 3
+
+
+def test_get_does_not_retry_missing_pages():
+    calls = []
+
+    def opener(req, timeout):
+        calls.append(1)
+        raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, None)
+
+    with pytest.raises(urllib.error.HTTPError):
+        sc.get("https://api.jikan.moe/v4/x", opener=opener, sleep=lambda s: None)
+    assert len(calls) == 1
+
+
+def test_cli_scrape_subcommand(tmp_path, monkeypatch):
+    get_json, _ = fake_jikan(per_anime=20)
+    monkeypatch.setattr(sc, "get", get_json)
+    monkeypatch.setattr(sc, "PAUSE", 0)
+    monkeypatch.setattr(sc.time, "sleep", lambda s: None)
+    main(["scrape", "--top", "3", "--out", str(tmp_path / "r.csv")])
+    assert len(pd.read_csv(tmp_path / "r.csv")) == 60

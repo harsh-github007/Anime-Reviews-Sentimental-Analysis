@@ -1,0 +1,47 @@
+name: Monthly analysis
+
+# Downloads the reviews of MyAnimeList's top 10 airing anime, runs the analysis and
+# commits results/ (charts and numbers only). The raw reviews are not committed.
+on:
+  schedule:
+    - cron: "43 5 1 * *"   # 05:43 UTC on the 1st of every month
+  workflow_dispatch:
+    inputs:
+      top:
+        description: "How many anime to take from the chart"
+        default: "10"
+  push:
+    branches: [main]
+    paths: [src/animesent/**, .github/workflows/monthly.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monthly-analysis
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e .
+      - name: Download reviews from MyAnimeList
+        run: python -m animesent scrape --top "${{ github.event.inputs.top || '10' }}" --out data/reviews.csv
+      - name: Analyse
+        run: python -m animesent --data data/reviews.csv --min-reviews 20 --out results
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          git diff --cached --quiet || git commit -m "Monthly results: top ${{ github.event.inputs.top || '10' }} airing anime"
+          git pull --rebase --quiet
+          git push
