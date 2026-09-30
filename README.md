@@ -48,7 +48,7 @@ python -m animesent --data data/reviews.csv --min-reviews 20
 python -m pytest                                      # 27 tests on synthetic reviews, a fake API and sample pages
 ```
 
-**In Colab:** click the badge above to run the analysis on a reviews file from your Google Drive, with a GPU for SiEBERT.
+**In Colab:** click the badge above. It downloads this month's top 10 and runs the analysis, or analyses your own reviews file from Google Drive. Turn on a GPU to include SiEBERT.
 
 Outputs go to `results/`: `results.md`, `metrics.json`, `by_show.csv`, `anime.json` (the chosen anime) and three charts. They hold aggregate numbers only, no review text or usernames.
 
