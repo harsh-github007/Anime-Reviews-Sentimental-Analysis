@@ -1,10 +1,10 @@
 {
-  "scraped": "2026-09-30T06:33:35Z",
+  "scraped": "2026-09-30T06:38:38Z",
   "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
   "chart": "top airing",
-  "min_reviews": 20,
-  "max_reviews_per_anime": 200,
-  "reviews": 446,
+  "min_reviews": 0,
+  "max_reviews_per_anime": 100,
+  "reviews": 261,
   "anime": [
     {
       "anime_id": 61316,
@@ -15,6 +15,16 @@
       "members": 337793,
       "season": null,
       "reviews": 83
+    },
+    {
+      "anime_id": 61469,
+      "top_rank": 2,
+      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "mal_title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "score": 9.07,
+      "members": 239562,
+      "season": null,
+      "reviews": 2
     },
     {
       "anime_id": 60636,
@@ -34,254 +44,68 @@
       "score": 8.72,
       "members": 2731788,
       "season": null,
-      "reviews": 200
+      "reviews": 100
     },
     {
-      "anime_id": 235,
-      "top_rank": 13,
-      "title": "Meitantei Conan",
-      "mal_title": "Meitantei Conan",
-      "score": 8.18,
-      "members": 382163,
-      "season": null,
-      "reviews": 102
-    },
-    {
-      "anime_id": 44042,
-      "top_rank": 14,
-      "title": "Holo no Graffiti",
-      "mal_title": "Holo no Graffiti",
-      "score": 8.13,
-      "members": 58685,
-      "season": null,
-      "reviews": 30
-    }
-  ],
-  "skipped": [
-    {
-      "top_rank": 2,
-      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
-      "reviews": 2
-    },
-    {
+      "anime_id": 50250,
       "top_rank": 5,
       "title": "Chiikawa",
+      "mal_title": "Chiikawa",
+      "score": 8.62,
+      "members": 26463,
+      "season": null,
       "reviews": 8
     },
     {
+      "anime_id": 63832,
       "top_rank": 6,
       "title": "Seihantai na Kimi to Boku 2nd Season",
+      "mal_title": "Seihantai na Kimi to Boku 2nd Season",
+      "score": 8.51,
+      "members": 120635,
+      "season": null,
       "reviews": 18
     },
     {
+      "anime_id": 61607,
       "top_rank": 7,
       "title": "Shiguang Dailiren III",
+      "mal_title": "Shiguang Dailiren III",
+      "score": 8.51,
+      "members": 39409,
+      "season": null,
       "reviews": 2
     },
     {
+      "anime_id": 55809,
       "top_rank": 8,
       "title": "Xian Ni",
+      "mal_title": "Xian Ni",
+      "score": 8.49,
+      "members": 12988,
+      "season": null,
       "reviews": 13
     },
     {
+      "anime_id": 60988,
       "top_rank": 9,
       "title": "Tian Guan Cifu Short Films",
+      "mal_title": "Tian Guan Cifu Short Films",
+      "score": 8.47,
+      "members": 12588,
+      "season": null,
       "reviews": 0
     },
     {
+      "anime_id": 51039,
       "top_rank": 10,
       "title": "Doupo Cangqiong: Nian Fan",
+      "mal_title": "Doupo Cangqiong: Nian Fan",
+      "score": 8.39,
+      "members": 12920,
+      "season": null,
       "reviews": 4
-    },
-    {
-      "top_rank": 11,
-      "title": "Tunshi Xingkong 4th Season",
-      "reviews": 4
-    },
-    {
-      "top_rank": 12,
-      "title": "Mushen Ji",
-      "reviews": 6
-    },
-    {
-      "top_rank": 15,
-      "title": "Guangyin Zhi Wai 2",
-      "reviews": 0
-    },
-    {
-      "top_rank": 16,
-      "title": "Yuanshen: Donghua Duanpian",
-      "reviews": 2
-    },
-    {
-      "top_rank": 17,
-      "title": "Fanren Xiu Xian Zhuan: Mulan Zhi Zhan",
-      "reviews": 0
-    },
-    {
-      "top_rank": 18,
-      "title": "Douluo Dalu II: Jueshi Tangmen",
-      "reviews": 3
-    },
-    {
-      "top_rank": 19,
-      "title": "Wanmei Shijie",
-      "reviews": 14
-    },
-    {
-      "top_rank": 20,
-      "title": "Benghuai: Xing Qiong Tiedao - Donghua Duanpian",
-      "reviews": 0
-    },
-    {
-      "top_rank": 21,
-      "title": "Crayon Shin-chan",
-      "reviews": 16
-    },
-    {
-      "top_rank": 22,
-      "title": "Doraemon (2005)",
-      "reviews": 3
-    },
-    {
-      "top_rank": 23,
-      "title": "Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou",
-      "reviews": 6
-    },
-    {
-      "top_rank": 24,
-      "title": "Cang Yuan Tu 3",
-      "reviews": 0
-    },
-    {
-      "top_rank": 25,
-      "title": "Zhe Tian",
-      "reviews": 8
-    },
-    {
-      "top_rank": 26,
-      "title": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen - Ryoushu no Youjo",
-      "reviews": 10
-    },
-    {
-      "top_rank": 27,
-      "title": "Meitantei Precure!",
-      "reviews": 4
-    },
-    {
-      "top_rank": 28,
-      "title": "Gensou Mangekyou: The Memories of Phantasm",
-      "reviews": 12
-    },
-    {
-      "top_rank": 29,
-      "title": "Koupen-chan",
-      "reviews": 2
-    },
-    {
-      "top_rank": 30,
-      "title": "Wushen Zhuzai",
-      "reviews": 11
-    },
-    {
-      "top_rank": 31,
-      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
-      "reviews": 0
-    },
-    {
-      "top_rank": 32,
-      "title": "Nige Jouzu no Wakagimi 2nd Season",
-      "reviews": 1
-    },
-    {
-      "top_rank": 33,
-      "title": "Yamato yo, Towa ni: Rebel 3199",
-      "reviews": 0
-    },
-    {
-      "top_rank": 34,
-      "title": "Yi Nian Yong Heng: Wanjie Ji",
-      "reviews": 0
-    },
-    {
-      "top_rank": 35,
-      "title": "Chibi Maruko-chan (1995)",
-      "reviews": 2
-    },
-    {
-      "top_rank": 36,
-      "title": "Lian Qi Shi Wan Nian",
-      "reviews": 4
-    },
-    {
-      "top_rank": 37,
-      "title": "Pokemon (2023)",
-      "reviews": 16
-    },
-    {
-      "top_rank": 38,
-      "title": "Nitian Xie Shen: Nian Fan",
-      "reviews": 1
-    },
-    {
-      "top_rank": 39,
-      "title": "Tensei Kizoku, Kantei Skill de Nariagaru 3rd Season",
-      "reviews": 0
-    },
-    {
-      "top_rank": 40,
-      "title": "Hifuu Katsudou Kiroku: The Sealed Esoteric History",
-      "reviews": 3
-    },
-    {
-      "top_rank": 41,
-      "title": "Re:Zero kara Hajimeru Break Time 4th Season",
-      "reviews": 0
-    },
-    {
-      "top_rank": 42,
-      "title": "Tempal: Item no Chikara",
-      "reviews": 0
-    },
-    {
-      "top_rank": 43,
-      "title": "Touhou Niji Sousaku Doujin Anime: Musou Kakyou",
-      "reviews": 10
-    },
-    {
-      "top_rank": 44,
-      "title": "Ni Tian Zhizun",
-      "reviews": 4
-    },
-    {
-      "top_rank": 45,
-      "title": "Girigiri Warukunai Watame",
-      "reviews": 3
-    },
-    {
-      "top_rank": 46,
-      "title": "Wu Shang Shen Di 2nd Season",
-      "reviews": 2
-    },
-    {
-      "top_rank": 47,
-      "title": "GANSO! BanG Dream Chan",
-      "reviews": 0
-    },
-    {
-      "top_rank": 48,
-      "title": "Oneechan Gokko",
-      "reviews": 1
-    },
-    {
-      "top_rank": 49,
-      "title": "Wan Jie Du Zun 3rd Season",
-      "reviews": 0
-    },
-    {
-      "top_rank": 50,
-      "title": "Da Zhuzai: Nian Fan 2",
-      "reviews": 2
     }
-  ]
+  ],
+  "skipped": []
 }
