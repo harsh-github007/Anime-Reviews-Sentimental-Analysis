@@ -1,5 +1,5 @@
 {
-  "scraped": "2026-09-30T06:10:58Z",
+  "scraped": "2026-09-30T06:33:35Z",
   "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
   "chart": "top airing",
   "min_reviews": 20,
@@ -157,6 +157,131 @@
       "top_rank": 25,
       "title": "Zhe Tian",
       "reviews": 8
+    },
+    {
+      "top_rank": 26,
+      "title": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen - Ryoushu no Youjo",
+      "reviews": 10
+    },
+    {
+      "top_rank": 27,
+      "title": "Meitantei Precure!",
+      "reviews": 4
+    },
+    {
+      "top_rank": 28,
+      "title": "Gensou Mangekyou: The Memories of Phantasm",
+      "reviews": 12
+    },
+    {
+      "top_rank": 29,
+      "title": "Koupen-chan",
+      "reviews": 2
+    },
+    {
+      "top_rank": 30,
+      "title": "Wushen Zhuzai",
+      "reviews": 11
+    },
+    {
+      "top_rank": 31,
+      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "reviews": 0
+    },
+    {
+      "top_rank": 32,
+      "title": "Nige Jouzu no Wakagimi 2nd Season",
+      "reviews": 1
+    },
+    {
+      "top_rank": 33,
+      "title": "Yamato yo, Towa ni: Rebel 3199",
+      "reviews": 0
+    },
+    {
+      "top_rank": 34,
+      "title": "Yi Nian Yong Heng: Wanjie Ji",
+      "reviews": 0
+    },
+    {
+      "top_rank": 35,
+      "title": "Chibi Maruko-chan (1995)",
+      "reviews": 2
+    },
+    {
+      "top_rank": 36,
+      "title": "Lian Qi Shi Wan Nian",
+      "reviews": 4
+    },
+    {
+      "top_rank": 37,
+      "title": "Pokemon (2023)",
+      "reviews": 16
+    },
+    {
+      "top_rank": 38,
+      "title": "Nitian Xie Shen: Nian Fan",
+      "reviews": 1
+    },
+    {
+      "top_rank": 39,
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru 3rd Season",
+      "reviews": 0
+    },
+    {
+      "top_rank": 40,
+      "title": "Hifuu Katsudou Kiroku: The Sealed Esoteric History",
+      "reviews": 3
+    },
+    {
+      "top_rank": 41,
+      "title": "Re:Zero kara Hajimeru Break Time 4th Season",
+      "reviews": 0
+    },
+    {
+      "top_rank": 42,
+      "title": "Tempal: Item no Chikara",
+      "reviews": 0
+    },
+    {
+      "top_rank": 43,
+      "title": "Touhou Niji Sousaku Doujin Anime: Musou Kakyou",
+      "reviews": 10
+    },
+    {
+      "top_rank": 44,
+      "title": "Ni Tian Zhizun",
+      "reviews": 4
+    },
+    {
+      "top_rank": 45,
+      "title": "Girigiri Warukunai Watame",
+      "reviews": 3
+    },
+    {
+      "top_rank": 46,
+      "title": "Wu Shang Shen Di 2nd Season",
+      "reviews": 2
+    },
+    {
+      "top_rank": 47,
+      "title": "GANSO! BanG Dream Chan",
+      "reviews": 0
+    },
+    {
+      "top_rank": 48,
+      "title": "Oneechan Gokko",
+      "reviews": 1
+    },
+    {
+      "top_rank": 49,
+      "title": "Wan Jie Du Zun 3rd Season",
+      "reviews": 0
+    },
+    {
+      "top_rank": 50,
+      "title": "Da Zhuzai: Nian Fan 2",
+      "reviews": 2
     }
   ]
 }
