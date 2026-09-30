@@ -1,11 +1,11 @@
 # Results
 
-261 reviews of 9 shows, each tagged by its author as Recommended (167), Mixed Feelings (30), Not Recommended (64).
+261 reviews of 9 shows, each tagged by its author as Recommended (175), Mixed Feelings (33), Not Recommended (53).
 Dropped before analysis: 0 with no verdict tag, 0 empty, 0 duplicates.
 
 ## The anime
 
-The 10 highest-ranked anime on MyAnimeList's top airing chart on 2026-09-30 with at least 0 reviews, and up to 100 of each one's reviews.
+The top 10 anime on MyAnimeList's top airing chart on 2026-09-30, and each one's newest 100 reviews.
 
 | Chart rank | Anime | MAL score | Reviews |
 | ---: | --- | ---: | ---: |
@@ -24,14 +24,14 @@ The 10 highest-ranked anime on MyAnimeList's top airing chart on 2026-09-30 with
 
 The score MyAnimeList shows is the average of every user's rating. Each review also carries its author's 1–10 rating, so the latest reviews can be checked against it.
 
-Across the 9 shows with rated reviews, the latest reviews average **0.86 points below** the site score, and are **1.07 points away** on average. 3 of 9 land within half a point.
+Across the 9 shows with rated reviews, the latest reviews average **0.79 points below** the site score, and are **0.99 points away** on average. 3 of 9 land within half a point.
 
 | Chart rank | Anime | MAL score | Latest reviews | Their average rating | Gap | Recommended | Reviews dated |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | 1 | Re:Zero kara Hajimeru Isekai Seikatsu 4th Season | 9.11 | 83 | 7.81 | -1.30 | 66% | 2026-04-22 to 2026-09-25 |
 | 2 | Steel Ball Run: JoJo no Kimyou na Bouken | 9.07 | 2 | 10.00 | +0.93 | 100% | 2026-09-28 to 2026-09-28 |
 | 3 | Bleach: Sennen Kessen-hen - Kashin-tan | 9.03 | 31 | 7.71 | -1.32 | 71% | 2026-08-12 to 2026-09-23 |
-| 4 | One Piece | 8.72 | 100 | 6.91 | -1.81 | 52% | 2007-04-17 to 2026-05-27 |
+| 4 | One Piece | 8.72 | 100 | 7.62 | -1.10 | 60% | 2025-04-02 to 2026-09-12 |
 | 5 | Chiikawa | 8.62 | 8 | 8.38 | -0.24 | 100% | 2023-10-29 to 2026-09-19 |
 | 6 | Seihantai na Kimi to Boku 2nd Season | 8.51 | 18 | 8.44 | -0.07 | 89% | 2026-07-21 to 2026-09-29 |
 | 7 | Shiguang Dailiren III | 8.51 | 2 | 6.50 | -2.01 | 50% | 2026-08-31 to 2026-09-27 |
@@ -43,19 +43,19 @@ Reviews are a small, self-selected group: people who write a review often feel s
 
 ## What TextBlob says
 
-TextBlob calls 88.9% of reviews positive. The reviewers themselves recommend 64.0% of the shows they review, and TextBlob scores 64% of **Not Recommended** reviews as positive.
+TextBlob calls 90.8% of reviews positive. The reviewers themselves recommend 67.0% of the shows they review, and TextBlob scores 75% of **Not Recommended** reviews as positive.
 
 ![TextBlob polarity by verdict](figures/textblob_by_verdict.png)
 
 ## How well each method matches the verdict
 
-Recommended vs Not Recommended: 231 reviews (167 vs 64). Five-fold cross-validation split by show, so every review is scored by a model that never saw that show. Balanced accuracy averages the hit rate on each verdict, so always answering "Recommended" scores 50%.
+Recommended vs Not Recommended: 228 reviews (175 vs 53). Five-fold cross-validation split by show, so every review is scored by a model that never saw that show. Balanced accuracy averages the hit rate on each verdict, so always answering "Recommended" scores 50%.
 
 | Method | ROC AUC (95% CI) | Balanced accuracy, usual cut-off | Balanced accuracy, tuned cut-off | Not Recommended caught |
 | --- | ---: | ---: | ---: | ---: |
-| TextBlob | 0.92 (0.89–0.95) | 67% | 83% | 36% |
-| VADER | 0.78 (0.72–0.89) | 72% | 69% | 53% |
-| Trained on verdicts | 0.89 (0.84–0.95) | 72% | 79% | 50% |
+| TextBlob | 0.87 (0.83–0.94) | 61% | 80% | 25% |
+| VADER | 0.81 (0.72–0.89) | 71% | 69% | 51% |
+| Trained on verdicts | 0.86 (0.77–0.93) | 69% | 82% | 42% |
 
 Best at separating the verdicts: **TextBlob**.
 
@@ -63,13 +63,13 @@ Best at separating the verdicts: **TextBlob**.
 
 ## Three verdicts
 
-Trained on all three tags, the model reaches a macro F1 of 0.48 and balanced accuracy of 50%. Rows are the reviewer's tag, columns the model's guess:
+Trained on all three tags, the model reaches a macro F1 of 0.46 and balanced accuracy of 47%. Rows are the reviewer's tag, columns the model's guess:
 
 | | Recommended | Mixed Feelings | Not Recommended |
 | --- | ---: | ---: | ---: |
-| **Recommended** | 157 | 0 | 10 |
-| **Mixed Feelings** | 19 | 0 | 11 |
-| **Not Recommended** | 29 | 0 | 35 |
+| **Recommended** | 171 | 0 | 4 |
+| **Mixed Feelings** | 27 | 0 | 6 |
+| **Not Recommended** | 30 | 0 | 23 |
 
 ## By show
 
@@ -81,14 +81,14 @@ Shows with at least 20 reviews (3).
 | --- | ---: | ---: | ---: | ---: |
 | Bleach: Sennen Kessen-hen - Kashin-tan | 31 | 71% (53%–84%) | 23% | 94% |
 | Re:Zero kara Hajimeru Isekai Seikatsu 4th Season | 83 | 66% (56%–76%) | 23% | 88% |
-| One Piece | 100 | 52% (42%–62%) | 35% | 86% |
+| One Piece | 100 | 60% (50%–69%) | 24% | 91% |
 
 ## What the trained model listens to
 
 Words and phrases with the largest weights toward each verdict:
 
-- **Recommended:** very, best, amazing, cour, love, peak, the best, 10 10, the animation, unique, quot, bleach, this season, season, chiikawa
-- **Not Recommended:** plot, waste, bad, the worst, worst, same, boring, the same, minutes, like, any, the plot, time, over, nothing
+- **Recommended:** best, the best, 10 10, amazing, cour, you, peak, the animation, perfect, very, such, animation, love, especially, world
+- **Not Recommended:** plot, same, the worst, worst, bad, the same, the plot, minutes, over, fight, out of, boring, no, barely, rather
 
 ## Caveats
 
