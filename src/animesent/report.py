@@ -95,6 +95,47 @@ def chart_titles(by_title, path, n=15):
     plt.close(fig)
 
 
+def latest_vs_mal(df, scrape):
+    """Per anime: the MyAnimeList score next to the average rating in its latest reviews."""
+    import pandas as pd
+    rows = []
+    for a in scrape["anime"]:
+        g = df[df["title"] == a["title"]]
+        sc = pd.to_numeric(g["score"], errors="coerce").dropna() if "score" in g else pd.Series(dtype=float)
+        avg = sc.mean() if len(sc) else np.nan
+        rows.append({"chart_rank": a["top_rank"], "title": a["title"], "mal_score": a.get("score"),
+                     "reviews": len(g), "rated": len(sc), "avg_review_score": avg,
+                     "gap": avg - a["score"] if a.get("score") is not None and avg == avg else np.nan,
+                     "recommended": (g["label"] == "Recommended").mean() if len(g) else np.nan,
+                     "from": g["date"].min() if len(g) else "", "to": g["date"].max() if len(g) else ""})
+    return pd.DataFrame(rows)
+
+
+def latest_section(cmp):
+    have = cmp[cmp["rated"] > 0]
+    lines = ["## Latest reviews vs the MyAnimeList score", "",
+             "The score MyAnimeList shows is the average of every user's rating. Each review also carries its author's 1–10 rating, "
+             "so the latest reviews can be checked against it.", ""]
+    if len(have):
+        mae = have["gap"].abs().mean()
+        bias = have["gap"].mean()
+        within = (have["gap"].abs() <= 0.5).sum()
+        lines += [f"Across the {len(have)} shows with rated reviews, the latest reviews average **{abs(bias):.2f} points "
+                  f"{'below' if bias < 0 else 'above'}** the site score, and are **{mae:.2f} points away** on average. "
+                  f"{within} of {len(have)} land within half a point.", ""]
+    lines += ["| Chart rank | Anime | MAL score | Latest reviews | Their average rating | Gap | Recommended | Reviews dated |",
+              "| ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |"]
+    for _, r in cmp.iterrows():
+        avg = f"{r['avg_review_score']:.2f}" if r["rated"] else "–"
+        gap = f"{r['gap']:+.2f}" if r["gap"] == r["gap"] else "–"
+        rec = pct(r["recommended"]) if r["reviews"] else "–"
+        dates = f"{r['from']} to {r['to']}" if r["reviews"] else "no reviews"
+        lines.append(f"| {r['chart_rank']} | {r['title']} | {r['mal_score']} | {r['reviews']} | {avg} | {gap} | {rec} | {dates} |")
+    lines += ["", "Reviews are a small, self-selected group: people who write a review often feel strongly, "
+              "and a show's latest reviews reflect its latest episodes, while the site score covers everyone who rated it.", ""]
+    return lines
+
+
 def scrape_intro(scrape):
     """One sentence on how the anime were chosen, naming any that were skipped."""
     text = (f"The {len(scrape['anime'])} highest-ranked anime on MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]} "
@@ -106,7 +147,7 @@ def scrape_intro(scrape):
     return text
 
 
-def write_markdown(res, info, by_title, out, scrape=None):
+def write_markdown(res, info, by_title, out, scrape=None, cmp=None):
     o, m, b = res["original"], res["methods"], res["binary"]
     when = (f"Reviews of the {scrape['chart']} chart on MyAnimeList, downloaded {scrape['scraped'][:10]}"
             if scrape else "One snapshot of MyAnimeList reviews")
@@ -122,6 +163,7 @@ def write_markdown(res, info, by_title, out, scrape=None):
             "| Chart rank | Anime | MAL score | Reviews |", "| ---: | --- | ---: | ---: |",
             *[f"| {a['top_rank']} | {a['title']} | {a['score'] if a['score'] is not None else '–'} | {a.get('reviews', 0):,} |" for a in scrape["anime"]],
             ""] if scrape else []),
+        *(latest_section(cmp) if cmp is not None else []),
         "## What TextBlob says", "",
         f"TextBlob calls {pct(o['textblob_positive_share'], 1)} of reviews positive. "
         f"The reviewers themselves recommend {pct(o['actual_recommended_share'], 1)} of the shows they review, "
@@ -171,7 +213,7 @@ def write_markdown(res, info, by_title, out, scrape=None):
     (out / "results.md").write_text("\n".join(lines))
 
 
-def report(res, info, by_title, dist, out="results", scrape=None):
+def report(res, info, by_title, dist, out="results", scrape=None, df=None):
     out = Path(out)
     (out / "figures").mkdir(parents=True, exist_ok=True)
     chart_methods(res, out / "figures" / "methods.png")
@@ -180,6 +222,10 @@ def report(res, info, by_title, dist, out="results", scrape=None):
         chart_titles(by_title, out / "figures" / "titles.png")
     by_title.to_csv(out / "by_show.csv", index=False)
     (out / "metrics.json").write_text(json.dumps({"data": info, **res}, indent=2, default=float))
+    cmp = None
     if scrape:
         (out / "anime.json").write_text(json.dumps(scrape, indent=2))
-    write_markdown(res, info, by_title, out, scrape)
+        if df is not None:
+            cmp = latest_vs_mal(df, scrape)
+            cmp.to_csv(out / "latest_vs_mal.csv", index=False)
+    write_markdown(res, info, by_title, out, scrape, cmp)

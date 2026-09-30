@@ -148,8 +148,8 @@ def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
 CANDIDATES = 50  # how far down the chart to look for shows with enough reviews (one chart page)
 
 
-def scrape(top=10, filter_="airing", max_pages=10, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
-           source="auto", fetch_html=None, min_reviews=20):
+def scrape(top=10, filter_="airing", max_pages=5, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
+           source="auto", fetch_html=None, min_reviews=0):
     """The `top` highest-ranked anime on the chart that have at least `min_reviews` reviews, and their reviews.
 
     New and niche shows can sit high on the chart with only a handful of reviews, which is
@@ -223,8 +223,8 @@ def main(argv=None):
     p.add_argument("--top", type=int, default=10, help="how many anime to take from the chart (default 10)")
     p.add_argument("--filter", default="airing", choices=["airing", "upcoming", "bypopularity", "favorite"],
                    help="which MyAnimeList chart: airing = the top-scored shows airing now (default)")
-    p.add_argument("--max-pages", type=int, default=10, help="review pages per anime, 20 reviews each (default 10, so at most 200)")
-    p.add_argument("--min-reviews", type=int, default=20, help="skip shows with fewer reviews than this (default 20)")
+    p.add_argument("--max-pages", type=int, default=5, help="review pages per anime, newest first, 20 reviews each (default 5, so the latest 100)")
+    p.add_argument("--min-reviews", type=int, default=0, help="skip shows with fewer reviews than this (default 0: keep the top 10 as they are)")
     p.add_argument("--out", default="data/reviews.csv")
     p.add_argument("--source", default="auto", choices=["auto", "jikan", "mal"],
                    help="auto = Jikan, falling back to MyAnimeList's own pages when Jikan can't reach it (default)")

@@ -1,6 +1,6 @@
 # Sentiment in Anime Reviews: Checked Against the Reviewers' Own Verdicts
 
-Can an automatic sentiment tool tell whether an anime review is positive? Every review on MyAnimeList carries the reviewer's own verdict: **Recommended**, **Mixed Feelings** or **Not Recommended**. This project downloads the reviews of the ten best-scored anime airing on MyAnimeList each month (among those with at least 20 reviews), uses those verdicts as ground truth, and measures how well common sentiment methods agree with them.
+Can an automatic sentiment tool tell whether an anime review is positive? Every review on MyAnimeList carries the reviewer's own verdict: **Recommended**, **Mixed Feelings** or **Not Recommended**. This project downloads the reviews of the ten best-scored anime airing on MyAnimeList each month, uses those verdicts as ground truth, and measures how well common sentiment methods agree with them.
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_analysis.ipynb)
 
@@ -13,8 +13,8 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
 ## Method
 
 1. **Download** ([`scrape.py`](src/animesent/scrape.py)).
-   - Walks down MyAnimeList's "top airing" chart, the best-scored shows currently on air, and takes the first 10 with at least 20 reviews. New and niche shows can rank high with only a handful of reviews, too few to say anything about; the results name any that were skipped.
-   - Fetches up to 200 reviews of each, including preliminary reviews written before the show finished. The cap stops a long-running show with thousands of reviews from outweighing the rest.
+   - Takes the top 10 of MyAnimeList's "top airing" chart, the best-scored shows currently on air.
+   - Fetches each one's latest reviews, newest first, up to 100 per show (`--max-pages` raises the limit), including preliminary reviews written before the show finished.
    - Uses [Jikan](https://jikan.moe), a public read-only API over MyAnimeList data, and stays under its limits (fewer than one request a second). Jikan fetches from MyAnimeList live and often times out, so every request is retried with a growing wait.
    - When Jikan can't reach MyAnimeList, it reads MyAnimeList's own chart and review pages instead ([`mal_pages.py`](src/animesent/mal_pages.py)). These pages are open to general crawlers under MyAnimeList's robots.txt. Requests name the project in their user agent and are spaced 3 seconds apart, and the scraper stops if MyAnimeList refuses them.
 2. **Load** ([`data.py`](src/animesent/data.py)).
@@ -33,7 +33,8 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
    - **Metrics:** ROC AUC measures how well a score separates the two verdicts at any cut-off. Balanced accuracy averages the hit rate on each verdict, so a method that calls everything positive scores 50%.
    - **Confidence intervals** resample whole shows (a cluster bootstrap), because reviews of the same show are not independent.
    - **Three verdicts:** the trained model is also tested on all three tags.
-6. **By show:** for shows with at least 20 reviews, the share of reviewers who recommend the show (with a Wilson interval), compared with what TextBlob and the trained model would report.
+6. **Latest reviews vs the site score:** for each show, the average 1–10 rating in its latest reviews next to the score MyAnimeList shows, and the gap between them.
+7. **By show:** for shows with at least 20 reviews, the share of reviewers who recommend the show (with a Wilson interval), compared with what TextBlob and the trained model would report.
 
 ## Running it
 

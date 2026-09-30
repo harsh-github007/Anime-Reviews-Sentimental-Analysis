@@ -56,8 +56,8 @@ def top_url(filter_="airing"):
     return f"{BASE}/topanime.php" + ("" if filter_ in ("", None, "all") else f"?type={filter_}")
 
 
-def reviews_url(anime_id, page):
-    return f"{BASE}/anime/{anime_id}/_/reviews?sort=suggested&preliminary=on&spoiler=on&p={page}"
+def reviews_url(anime_id, page, sort="recent"):
+    return f"{BASE}/anime/{anime_id}/_/reviews?sort={sort}&preliminary=on&spoiler=on&p={page}"
 
 
 def _num(text):

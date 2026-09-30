@@ -55,7 +55,7 @@ def main(argv=None):
     res, by_title, dist = evaluate(df, scores, min_reviews=a.min_reviews)
     scrape_info = Path(a.data).with_name("scrape_info.json")
     scrape = json.loads(scrape_info.read_text()) if scrape_info.exists() else None
-    report(res, info, by_title, dist, a.out, scrape)
+    report(res, info, by_title, dist, a.out, scrape, df)
     print(f"Best method: {res['best_method']}. See {a.out}/results.md")
 
 
