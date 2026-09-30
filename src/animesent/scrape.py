@@ -1,11 +1,13 @@
-"""Download this month's top anime and their reviews from MyAnimeList, through the Jikan API.
+"""Download this month's top anime and their reviews from MyAnimeList.
 
     python -m animesent scrape --top 10 --out data/reviews.csv
 
-Jikan (https://jikan.moe) is a public, read-only API over MyAnimeList data. It asks
-clients to stay under 3 requests a second and 60 a minute, and it fetches from
-MyAnimeList live, so slow responses and 504s are normal: every request is retried
-with a growing wait.
+Two sources, tried in this order (--source auto):
+  1. Jikan (https://jikan.moe), a public read-only API over MyAnimeList data. It asks
+     clients to stay under 3 requests a second and 60 a minute. It fetches from
+     MyAnimeList live, so slow responses and 504s are normal and are retried.
+  2. MyAnimeList's own public pages (see mal_pages.py), when Jikan can't serve the
+     chart or the reviews.
 
 Writes:
   data/reviews.csv        one row per review: title, date, user, tag, text and more
@@ -21,7 +23,10 @@ import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
+
+from . import mal_pages
 
 API = "https://api.jikan.moe/v4"
 PAUSE = 1.2          # seconds between requests: 50 a minute, inside Jikan's limit
@@ -107,14 +112,74 @@ def reviews(anime, max_pages=25, get_json=None, pause=None, sleep=None):
     return rows
 
 
-def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_json=None, pause=None, sleep=None):
+def mal_row(anime, rv):
+    tags = list(rv["tags"])
+    if rv["preliminary"] and not any("preliminary" in t.lower() for t in tags):
+        tags.append("Preliminary")
+    return {"anime_id": anime["anime_id"], "top_rank": anime["top_rank"], "title": anime["title"],
+            "date": rv["date"], "user": rv["user"], "tag": " ".join(tags), "score": rv["score"],
+            "preliminary": rv["preliminary"], "spoiler": rv["spoiler"], "episodes_watched": rv["episodes_watched"],
+            "helpful": None, "text": rv["text"]}
+
+
+def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
+    """An anime's reviews read from MyAnimeList's review pages (20 a page)."""
+    fetch_html, sleep = fetch_html or mal_pages.get_html, sleep or time.sleep
+    pause = mal_pages.PAUSE if pause is None else pause
+    rows = []
+    for page in range(1, max_pages + 1):
+        sleep(pause)
+        try:
+            html = fetch_html(mal_pages.reviews_url(anime["anime_id"], page))
+        except mal_pages.Blocked:
+            raise
+        except Exception as e:  # noqa: BLE001 - keep what was fetched
+            notice("warning", f"{anime['title']}: MyAnimeList page {page} failed ({type(e).__name__}: {e}); kept {len(rows)} reviews")
+            break
+        found = mal_pages.parse_reviews(html)
+        if page == 1 and not found:
+            notice("warning", f"{anime['title']}: no reviews recognised on MyAnimeList's page. {mal_pages.page_shape(html)}")
+        rows += [mal_row(anime, rv) for rv in found]
+        if len(found) < 20:
+            break
+    return rows
+
+
+def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
+           source="auto", fetch_html=None):
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    chosen = top_anime(top, filter_, get_json)
+    fetch_html = fetch_html or mal_pages.get_html
+    quick = get_json or partial(get, tries=3)   # probe Jikan without waiting minutes on an outage
+
+    chosen, used = None, []
+    if source in ("auto", "jikan"):
+        try:
+            chosen = top_anime(top, filter_, quick)
+            used.append("Jikan chart")
+        except Exception as e:  # noqa: BLE001
+            if source == "jikan":
+                raise
+            notice("warning", f"Jikan couldn't serve the chart ({type(e).__name__}: {e}); reading MyAnimeList's chart page instead")
+    if chosen is None:
+        chosen = mal_pages.parse_top(fetch_html(mal_pages.top_url(filter_)), top)
+        used.append("MyAnimeList chart page")
+        if not chosen:
+            raise RuntimeError("no anime recognised on MyAnimeList's chart page. " + mal_pages.page_shape(fetch_html(mal_pages.top_url(filter_))))
     print(f"Top {len(chosen)} ({filter_}) on MyAnimeList:")
+
+    use_mal = source == "mal"
+    if source == "auto":
+        try:  # one quick probe decides whether Jikan's review pages are working today
+            quick(f"{API}/anime/{chosen[0]['anime_id']}/reviews?page=1&preliminary=true&spoilers=true")
+        except Exception as e:  # noqa: BLE001
+            notice("warning", f"Jikan couldn't serve reviews ({type(e).__name__}: {e}); reading MyAnimeList's review pages instead")
+            use_mal = True
+    used.append("MyAnimeList review pages" if use_mal else "Jikan reviews")
+
     rows = []
     for a in chosen:
-        got = reviews(a, max_pages, get_json, pause, sleep)
+        got = reviews_mal(a, max_pages, fetch_html, pause, sleep) if use_mal else reviews(a, max_pages, get_json, pause, sleep)
         a["reviews"] = len(got)
         rows += got
         print(f"  {a['top_rank']:>2}. {a['title'][:55]:<55} score {a['score']}  {len(got):>4} reviews", flush=True)
@@ -126,7 +191,7 @@ def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_j
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(rows)
-    info = {"scraped": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "MyAnimeList via the Jikan API",
+    info = {"scraped": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "MyAnimeList (" + ", ".join(used) + ")",
             "chart": f"top {filter_}", "reviews": len(rows), "anime": chosen}
     (out.parent / "scrape_info.json").write_text(json.dumps(info, indent=2))
     print(f"Saved {len(rows):,} reviews to {out}")
@@ -140,9 +205,11 @@ def main(argv=None):
                    help="which MyAnimeList chart: airing = the top-scored shows airing now (default)")
     p.add_argument("--max-pages", type=int, default=25, help="review pages per anime, 20 reviews each (default 25)")
     p.add_argument("--out", default="data/reviews.csv")
+    p.add_argument("--source", default="auto", choices=["auto", "jikan", "mal"],
+                   help="auto = Jikan, falling back to MyAnimeList's own pages when Jikan can't reach it (default)")
     a = p.parse_args(argv)
     try:
-        scrape(a.top, a.filter, a.max_pages, a.out)
+        scrape(a.top, a.filter, a.max_pages, a.out, source=a.source)
     except Exception as err:  # noqa: BLE001 - report any failure in one readable line
         notice("error", f"Scrape stopped: {type(err).__name__}: {err}")
         sys.exit(1)

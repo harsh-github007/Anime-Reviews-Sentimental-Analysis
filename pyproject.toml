@@ -15,6 +15,7 @@ dependencies = [
   "openpyxl",
   "textblob",
   "vaderSentiment",
+  "beautifulsoup4",
 ]
 
 [project.optional-dependencies]

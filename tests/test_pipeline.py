@@ -158,7 +158,7 @@ def fake_jikan(per_anime=45, fail_first=False):
     calls = {"n": 0}
     rng = np.random.default_rng(3)
 
-    def get_json(url):
+    def get_json(url, **_):
         calls["n"] += 1
         if "/top/anime" in url:
             return {"data": [{"mal_id": 100 + i, "title": f"Show {i}", "title_english": None if i % 2 else f"Show {i} (EN)",
@@ -178,7 +178,7 @@ def test_scrape_takes_the_top_n_and_pages_through_reviews(tmp_path):
     get_json, calls = fake_jikan(per_anime=45)
     rows, info = sc.scrape(top=10, out=tmp_path / "reviews.csv", get_json=get_json, pause=0, sleep=lambda s: None)
     assert len(info["anime"]) == 10 and len(rows) == 10 * 45
-    assert calls["n"] == 1 + 10 * 3  # one chart call, three review pages per anime
+    assert calls["n"] == 1 + 1 + 10 * 3  # the chart, one probe of the review endpoint, three pages per anime
     assert info["anime"][0]["title"] == "Show 0 (EN)" and info["anime"][1]["title"] == "Show 1"
     assert (tmp_path / "scrape_info.json").exists()
     df, load_info = load(tmp_path / "reviews.csv")  # the analysis reads the scraper's file as it is
@@ -224,3 +224,85 @@ def test_cli_scrape_subcommand(tmp_path, monkeypatch):
     monkeypatch.setattr(sc.time, "sleep", lambda s: None)
     main(["scrape", "--top", "3", "--out", str(tmp_path / "r.csv")])
     assert len(pd.read_csv(tmp_path / "r.csv")) == 60
+
+
+# ------------------------------------------------------------------ MyAnimeList pages (fallback when Jikan is down)
+
+from animesent import mal_pages
+
+TOP_HTML = """<html><head><title>Top Airing Anime - MyAnimeList.net</title></head><body><table>
+""" + "".join(f"""<tr class="ranking-list"><td class="rank">{i + 1}</td><td class="title">
+<a class="hoverinfo_trigger" href="https://myanimelist.net/anime/{500 + i}/Show_{i}"><img></a>
+<div class="detail"><h3 class="anime_ranking_h3"><a href="https://myanimelist.net/anime/{500 + i}/Show_{i}">Show {i}</a></h3>
+<div class="information di-ib mt4">TV (12 eps)<br>Jul 2026 -<br>{(i + 1) * 1000:,} members</div></div></td>
+<td class="score ac fs14"><div class="js-top-ranking-score-col di-ib al"><span class="text on score-label score-8">{9 - i / 10:.2f}</span></div></td></tr>""" for i in range(12)) + "</table></body></html>"
+
+
+def review_html(n, verdicts=("recommended", "not-recommended", "mixed-feelings"), prelim_every=5):
+    labels = {"recommended": "Recommended", "not-recommended": "Not Recommended", "mixed-feelings": "Mixed Feelings"}
+    items = []
+    for k in range(n):
+        v = verdicts[k % len(verdicts)]
+        prelim = f'<div class="tag preliminary">Preliminary<span>(3/12 eps)</span></div>' if k % prelim_every == 0 else ""
+        items.append(f"""<div class="review-element js-review-element"><div class="thumbbody"><div class="body">
+<div class="username"><a href="https://myanimelist.net/profile/user{k}">user{k}</a></div>
+<div class="update_at">Sep {k % 28 + 1}, 2026</div>
+<div class="tags"><div class="tag {v}">{labels[v]}</div>{prelim}</div>
+<div class="text">Review number {k}. It was {"great" if v == "recommended" else "dull"}.<span class="js-visible">...</span>
+<span class="js-hidden">More words here.</span> <a class="js-toggle-review-button">Read more</a></div>
+<div class="rating mt20 mb20 js-hidden">Reviewer's Rating: <span class="num">{k % 10 + 1}</span></div>
+</div></div></div>""")
+    return "<html><head><title>Reviews - MyAnimeList.net</title></head><body>" + "".join(items) + "</body></html>"
+
+
+def test_parse_top_chart():
+    top = mal_pages.parse_top(TOP_HTML, 10)
+    assert len(top) == 10 and top[0]["anime_id"] == 500 and top[0]["title"] == "Show 0"
+    assert top[0]["score"] == 9.0 and top[2]["members"] == 3000 and top[9]["top_rank"] == 10
+
+
+def test_parse_reviews_page():
+    got = mal_pages.parse_reviews(review_html(6))
+    assert len(got) == 6
+    first = got[0]
+    assert first["user"] == "user0" and first["date"] == "2026-09-01"
+    assert first["tags"][0] == "Recommended" and first["preliminary"] and first["episodes_watched"] == 3
+    assert first["score"] == 1 and "More words here." in first["text"] and "Read more" not in first["text"]
+    assert [g["tags"][0] for g in got[:3]] == ["Recommended", "Not Recommended", "Mixed Feelings"]
+
+
+def test_page_shape_reports_counts_not_content():
+    shape = mal_pages.page_shape(review_html(3))
+    assert "div.review-element=3" in shape and "Review number" not in shape
+
+
+def test_scrape_falls_back_to_myanimelist_when_jikan_is_down(tmp_path):
+    def jikan_down(url, **_):
+        raise urllib.error.HTTPError(url, 504, "Gateway Time-out", {}, None)
+
+    pages = {"n": 0}
+
+    def fetch_html(url):
+        pages["n"] += 1
+        if "topanime.php" in url:
+            return TOP_HTML
+        page = int(url.split("p=")[1])
+        return review_html(20 if page == 1 else 7)  # a full first page, then a short last page
+
+    rows, info = sc.scrape(top=3, out=tmp_path / "r.csv", get_json=jikan_down, pause=0, sleep=lambda s: None, fetch_html=fetch_html)
+    assert len(rows) == 3 * 27 and "MyAnimeList review pages" in info["source"]
+    df, load_info = load(tmp_path / "r.csv")
+    assert set(df["label"]) == {"Recommended", "Not Recommended", "Mixed Feelings"}
+
+
+def test_scrape_stops_if_myanimelist_refuses(tmp_path):
+    def jikan_down(url, **_):
+        raise urllib.error.HTTPError(url, 504, "Gateway Time-out", {}, None)
+
+    def refused(url):
+        if "topanime.php" in url:
+            return TOP_HTML
+        raise mal_pages.Blocked("MyAnimeList refused the request (403)")
+
+    with pytest.raises(mal_pages.Blocked):
+        sc.scrape(top=2, out=tmp_path / "r.csv", get_json=jikan_down, pause=0, sleep=lambda s: None, fetch_html=refused)

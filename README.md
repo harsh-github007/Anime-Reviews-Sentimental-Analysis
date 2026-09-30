@@ -16,6 +16,7 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
    - Takes the top 10 of MyAnimeList's "top airing" chart, the best-scored shows currently on air.
    - Fetches every review of each, up to 500, including preliminary reviews written before the show finished.
    - Uses [Jikan](https://jikan.moe), a public read-only API over MyAnimeList data, and stays under its limits (fewer than one request a second). Jikan fetches from MyAnimeList live and often times out, so every request is retried with a growing wait.
+   - When Jikan can't reach MyAnimeList, it reads MyAnimeList's own chart and review pages instead ([`mal_pages.py`](src/animesent/mal_pages.py)). These pages are open to general crawlers under MyAnimeList's robots.txt. Requests name the project in their user agent and are spaced 3 seconds apart, and the scraper stops if MyAnimeList refuses them.
 2. **Load** ([`data.py`](src/animesent/data.py)).
    - Each review's tag is mapped to its verdict. Tags such as "Recommended Preliminary (3/12 eps)" are read by the phrase they contain.
    - Reviews with no verdict, empty text or duplicate text are dropped, and page furniture such as "Read more" is removed.
@@ -44,7 +45,7 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
 pip install -e ".[test]"                              # add ,model for the transformer
 python -m animesent scrape --top 10                   # writes data/reviews.csv (15–30 minutes)
 python -m animesent --data data/reviews.csv --min-reviews 20
-python -m pytest                                      # 22 tests on synthetic reviews and a fake API
+python -m pytest                                      # 27 tests on synthetic reviews, a fake API and sample pages
 ```
 
 **In Colab:** click the badge above to run the analysis on a reviews file from your Google Drive, with a GPU for SiEBERT.
@@ -59,6 +60,7 @@ Reviews from [MyAnimeList](https://myanimelist.net), downloaded through the Jika
 
 ```
 src/animesent/scrape.py     download the top anime and their reviews
+src/animesent/mal_pages.py  read MyAnimeList's pages when the API is down
 src/animesent/data.py       loading, verdict labels, anonymisation
 src/animesent/methods.py    TextBlob, VADER, SiEBERT
 src/animesent/evaluate.py   cross-validation, metrics, per-show results
