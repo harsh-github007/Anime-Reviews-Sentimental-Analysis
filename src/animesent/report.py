@@ -95,6 +95,17 @@ def chart_titles(by_title, path, n=15):
     plt.close(fig)
 
 
+def scrape_intro(scrape):
+    """One sentence on how the anime were chosen, naming any that were skipped."""
+    text = (f"The {len(scrape['anime'])} highest-ranked anime on MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]} "
+            f"with at least {scrape.get('min_reviews', 20)} reviews, and up to {scrape.get('max_reviews_per_anime', 200)} of each one's reviews.")
+    skipped = scrape.get("skipped") or []
+    if skipped:
+        names = ", ".join(f"{x['title']} ({x['reviews']})" for x in skipped)
+        text += f" Skipped for having too few reviews: {names}."
+    return text
+
+
 def write_markdown(res, info, by_title, out, scrape=None):
     o, m, b = res["original"], res["methods"], res["binary"]
     when = (f"Reviews of the {scrape['chart']} chart on MyAnimeList, downloaded {scrape['scraped'][:10]}"
@@ -107,8 +118,8 @@ def write_markdown(res, info, by_title, out, scrape=None):
         f"Dropped before analysis: {info.get('unknown_tag', 0):,} with no verdict tag, {info.get('empty_text', 0):,} empty, "
         f"{info.get('duplicates', 0):,} duplicates.", "",
         *(["## The anime", "",
-            f"The top {len(scrape['anime'])} of MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]}, with every review of each (up to 500):", "",
-            "| # | Anime | MAL score | Reviews |", "| ---: | --- | ---: | ---: |",
+            scrape_intro(scrape), "",
+            "| Chart rank | Anime | MAL score | Reviews |", "| ---: | --- | ---: | ---: |",
             *[f"| {a['top_rank']} | {a['title']} | {a['score'] if a['score'] is not None else '–'} | {a.get('reviews', 0):,} |" for a in scrape["anime"]],
             ""] if scrape else []),
         "## What TextBlob says", "",
@@ -139,8 +150,9 @@ def write_markdown(res, info, by_title, out, scrape=None):
     if "by_title" in res:
         bt = res["by_title"]
         lines += ["", "## By show", "",
-                  f"Shows with at least {bt['min_reviews']} reviews ({bt['titles']}). Rank correlation with the share of reviewers who recommend the show: "
-                  f"TextBlob {bt['rank_corr_textblob']:.2f}, trained model {bt['rank_corr_model']:.2f}.", "",
+                  f"Shows with at least {bt['min_reviews']} reviews ({bt['titles']})." + (
+                      f" Rank correlation with the share of reviewers who recommend the show: TextBlob {bt['rank_corr_textblob']:.2f}, "
+                      f"trained model {bt['rank_corr_model']:.2f}." if bt["titles"] >= 6 else ""), "",
                   "![Shows](figures/titles.png)", "",
                   "| Show | Reviews | Recommended (95% CI) | Not Recommended | TextBlob positive |", "| --- | ---: | ---: | ---: | ---: |"]
         for _, r in by_title.iterrows():

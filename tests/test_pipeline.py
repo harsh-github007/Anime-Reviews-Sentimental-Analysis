@@ -306,3 +306,21 @@ def test_scrape_stops_if_myanimelist_refuses(tmp_path):
 
     with pytest.raises(mal_pages.Blocked):
         sc.scrape(top=2, out=tmp_path / "r.csv", get_json=jikan_down, pause=0, sleep=lambda s: None, fetch_html=refused)
+
+
+def test_scrape_skips_shows_with_too_few_reviews(tmp_path):
+    def get_json(url, **_):
+        if "/top/anime" in url:
+            return {"data": [{"mal_id": 100 + i, "title": f"Show {i}", "score": 9 - i / 10} for i in range(8)]}
+        anime_id = int(url.split("/anime/")[1].split("/")[0])
+        n = 3 if anime_id % 2 else 25  # odd ids have only 3 reviews
+        page = int(url.split("page=")[1].split("&")[0])
+        start, end = (page - 1) * 20, min(page * 20, n)
+        data = [{"review": f"r{k}", "tags": ["Recommended"], "user": {"username": f"u{k}"}} for k in range(start, end)]
+        return {"data": data, "pagination": {"has_next_page": end < n}}
+
+    rows, info = sc.scrape(top=3, out=tmp_path / "r.csv", get_json=get_json, pause=0, sleep=lambda s: None, min_reviews=20)
+    assert [a["title"] for a in info["anime"]] == ["Show 0", "Show 2", "Show 4"]
+    assert [a["top_rank"] for a in info["anime"]] == [1, 3, 5]  # chart positions are kept
+    assert [s["title"] for s in info["skipped"]] == ["Show 1", "Show 3"]
+    assert len(rows) == 3 * 25

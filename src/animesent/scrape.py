@@ -72,7 +72,7 @@ def get(url, tries=8, opener=urllib.request.urlopen, sleep=time.sleep):
 def top_anime(n=10, filter_="airing", get_json=None):
     """The n highest-scored anime on MyAnimeList's chart (by default, those airing now)."""
     get_json = get_json or get
-    items = get_json(f"{API}/top/anime?filter={filter_}&limit={n}")["data"][:n]
+    items = get_json(f"{API}/top/anime?filter={filter_}&limit={min(n, 25)}")["data"][:n]
     return [{"anime_id": a["mal_id"], "top_rank": i + 1, "title": a.get("title_english") or a["title"],
              "mal_title": a["title"], "score": a.get("score"), "members": a.get("members"),
              "season": " ".join(str(x) for x in (a.get("season"), a.get("year")) if x) or None}
@@ -145,8 +145,16 @@ def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
     return rows
 
 
-def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
-           source="auto", fetch_html=None):
+CANDIDATES = 25  # how far down the chart to look for shows with enough reviews
+
+
+def scrape(top=10, filter_="airing", max_pages=10, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
+           source="auto", fetch_html=None, min_reviews=20):
+    """The `top` highest-ranked anime on the chart that have at least `min_reviews` reviews, and their reviews.
+
+    New and niche shows can sit high on the chart with only a handful of reviews, which is
+    too few to say anything about, so the scraper walks down the chart past them.
+    """
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     fetch_html = fetch_html or mal_pages.get_html
@@ -155,18 +163,18 @@ def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_j
     chosen, used = None, []
     if source in ("auto", "jikan"):
         try:
-            chosen = top_anime(top, filter_, quick)
+            chosen = top_anime(CANDIDATES, filter_, quick)
             used.append("Jikan chart")
         except Exception as e:  # noqa: BLE001
             if source == "jikan":
                 raise
             notice("warning", f"Jikan couldn't serve the chart ({type(e).__name__}: {e}); reading MyAnimeList's chart page instead")
     if chosen is None:
-        chosen = mal_pages.parse_top(fetch_html(mal_pages.top_url(filter_)), top)
+        chosen = mal_pages.parse_top(fetch_html(mal_pages.top_url(filter_)), CANDIDATES)
         used.append("MyAnimeList chart page")
         if not chosen:
             raise RuntimeError("no anime recognised on MyAnimeList's chart page. " + mal_pages.page_shape(fetch_html(mal_pages.top_url(filter_))))
-    print(f"Top {len(chosen)} ({filter_}) on MyAnimeList:")
+    print(f"Looking down MyAnimeList's {filter_} chart for {top} shows with at least {min_reviews} reviews:")
 
     use_mal = source == "mal"
     if source == "auto":
@@ -177,22 +185,34 @@ def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_j
             use_mal = True
     used.append("MyAnimeList review pages" if use_mal else "Jikan reviews")
 
-    rows = []
+    rows, kept, skipped = [], [], []
     for a in chosen:
         got = reviews_mal(a, max_pages, fetch_html, pause, sleep) if use_mal else reviews(a, max_pages, get_json, pause, sleep)
         a["reviews"] = len(got)
-        rows += got
-        print(f"  {a['top_rank']:>2}. {a['title'][:55]:<55} score {a['score']}  {len(got):>4} reviews", flush=True)
+        keep = len(got) >= min_reviews
+        note = "" if keep else "  (too few, skipped)"
+        print(f"  {a['top_rank']:>2}. {a['title'][:55]:<55} score {a['score']}  {len(got):>4} reviews{note}", flush=True)
         if os.environ.get("GITHUB_ACTIONS") == "true":
-            notice("notice", f"{a['top_rank']}. {a['title']} (MAL {a['score']}): {len(got)} reviews")
+            notice("notice", f"chart #{a['top_rank']} {a['title']} (MAL {a['score']}): {len(got)} reviews" + ("" if keep else ", skipped"))
+        if not keep:
+            skipped.append({"top_rank": a["top_rank"], "title": a["title"], "reviews": len(got)})
+            continue
+        kept.append(a)
+        rows += got
+        if len(kept) == top:
+            break
     if not rows:
-        raise RuntimeError("no reviews were returned for any of the chosen anime")
+        raise RuntimeError(f"none of the top {len(chosen)} anime had {min_reviews} or more reviews")
+    if len(kept) < top:
+        notice("warning", f"only {len(kept)} of the top {len(chosen)} anime had {min_reviews} or more reviews")
+    chosen = kept
     with open(out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(rows)
     info = {"scraped": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "MyAnimeList (" + ", ".join(used) + ")",
-            "chart": f"top {filter_}", "reviews": len(rows), "anime": chosen}
+            "chart": f"top {filter_}", "min_reviews": min_reviews, "max_reviews_per_anime": max_pages * PER_PAGE,
+            "reviews": len(rows), "anime": chosen, "skipped": skipped}
     (out.parent / "scrape_info.json").write_text(json.dumps(info, indent=2))
     print(f"Saved {len(rows):,} reviews to {out}")
     return rows, info
@@ -203,13 +223,14 @@ def main(argv=None):
     p.add_argument("--top", type=int, default=10, help="how many anime to take from the chart (default 10)")
     p.add_argument("--filter", default="airing", choices=["airing", "upcoming", "bypopularity", "favorite"],
                    help="which MyAnimeList chart: airing = the top-scored shows airing now (default)")
-    p.add_argument("--max-pages", type=int, default=25, help="review pages per anime, 20 reviews each (default 25)")
+    p.add_argument("--max-pages", type=int, default=10, help="review pages per anime, 20 reviews each (default 10, so at most 200)")
+    p.add_argument("--min-reviews", type=int, default=20, help="skip shows with fewer reviews than this (default 20)")
     p.add_argument("--out", default="data/reviews.csv")
     p.add_argument("--source", default="auto", choices=["auto", "jikan", "mal"],
                    help="auto = Jikan, falling back to MyAnimeList's own pages when Jikan can't reach it (default)")
     a = p.parse_args(argv)
     try:
-        scrape(a.top, a.filter, a.max_pages, a.out, source=a.source)
+        scrape(a.top, a.filter, a.max_pages, a.out, source=a.source, min_reviews=a.min_reviews)
     except Exception as err:  # noqa: BLE001 - report any failure in one readable line
         notice("error", f"Scrape stopped: {type(err).__name__}: {err}")
         sys.exit(1)
