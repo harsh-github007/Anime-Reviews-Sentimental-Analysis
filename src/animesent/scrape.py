@@ -145,7 +145,7 @@ def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
     return rows
 
 
-CANDIDATES = 25  # how far down the chart to look for shows with enough reviews
+CANDIDATES = 50  # how far down the chart to look for shows with enough reviews (one chart page)
 
 
 def scrape(top=10, filter_="airing", max_pages=10, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
