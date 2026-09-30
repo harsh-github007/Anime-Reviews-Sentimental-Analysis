@@ -15,6 +15,7 @@ Writes:
 import argparse
 import csv
 import json
+import os
 import sys
 import time
 import urllib.error
@@ -29,7 +30,15 @@ FIELDS = ["anime_id", "top_rank", "title", "date", "user", "tag", "score", "prel
           "episodes_watched", "helpful", "text"]
 
 
-def get(url, tries=6, opener=urllib.request.urlopen, sleep=time.sleep):
+def notice(level, msg):
+    """Print a message; on GitHub Actions also raise it as an annotation, which shows on the run page."""
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        print(f"::{level}::{msg}", flush=True)
+    else:
+        print(f"  {msg}", file=sys.stderr, flush=True)
+
+
+def get(url, tries=8, opener=urllib.request.urlopen, sleep=time.sleep):
     """GET a Jikan endpoint as JSON, retrying rate limits, server errors and dropped connections."""
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "anime-review-sentiment"})
     for attempt in range(tries):
@@ -41,16 +50,16 @@ def get(url, tries=6, opener=urllib.request.urlopen, sleep=time.sleep):
             if e.code == 404:
                 raise
             if e.code in (429, 500, 502, 503, 504) and not last:
-                wait = 5 * (attempt + 1) if e.code != 429 else 20 * (attempt + 1)
-                print(f"  {e.code} on {url.split('/v4')[-1]}; retrying in {wait}s", file=sys.stderr)
+                wait = min(10 * (attempt + 1), 60) if e.code != 429 else 30 * (attempt + 1)
+                print(f"  {e.code} on {url.split('/v4')[-1]}; retrying in {wait}s", file=sys.stderr, flush=True)
                 sleep(wait)
                 continue
             raise
         except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError) as e:
             if last:
                 raise
-            wait = 5 * (attempt + 1)
-            print(f"  {type(e).__name__} on {url.split('/v4')[-1]}; retrying in {wait}s", file=sys.stderr)
+            wait = min(10 * (attempt + 1), 60)
+            print(f"  {type(e).__name__} ({e}) on {url.split('/v4')[-1]}; retrying in {wait}s", file=sys.stderr, flush=True)
             sleep(wait)
     raise RuntimeError(f"gave up on {url}")
 
@@ -87,7 +96,11 @@ def reviews(anime, max_pages=25, get_json=None, pause=None, sleep=None):
     rows = []
     for page in range(1, max_pages + 1):
         sleep(pause)
-        r = get_json(f"{API}/anime/{anime['anime_id']}/reviews?page={page}&preliminary=true&spoilers=true")
+        try:
+            r = get_json(f"{API}/anime/{anime['anime_id']}/reviews?page={page}&preliminary=true&spoilers=true")
+        except Exception as e:  # noqa: BLE001 - keep the pages already fetched and move on
+            notice("warning", f"{anime['title']}: stopped at review page {page} ({type(e).__name__}: {e}); kept {len(rows)} reviews")
+            break
         rows += [to_row(anime, x) for x in r.get("data", [])]
         if not r.get("pagination", {}).get("has_next_page"):
             break
@@ -104,7 +117,9 @@ def scrape(top=10, filter_="airing", max_pages=25, out="data/reviews.csv", get_j
         got = reviews(a, max_pages, get_json, pause, sleep)
         a["reviews"] = len(got)
         rows += got
-        print(f"  {a['top_rank']:>2}. {a['title'][:55]:<55} score {a['score']}  {len(got):>4} reviews")
+        print(f"  {a['top_rank']:>2}. {a['title'][:55]:<55} score {a['score']}  {len(got):>4} reviews", flush=True)
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            notice("notice", f"{a['top_rank']}. {a['title']} (MAL {a['score']}): {len(got)} reviews")
     if not rows:
         raise RuntimeError("no reviews were returned for any of the chosen anime")
     with open(out, "w", newline="", encoding="utf-8") as f:
@@ -128,5 +143,6 @@ def main(argv=None):
     a = p.parse_args(argv)
     try:
         scrape(a.top, a.filter, a.max_pages, a.out)
-    except (urllib.error.URLError, RuntimeError, KeyError) as err:
-        sys.exit(f"Stopped: {err}")
+    except Exception as err:  # noqa: BLE001 - report any failure in one readable line
+        notice("error", f"Scrape stopped: {type(err).__name__}: {err}")
+        sys.exit(1)
