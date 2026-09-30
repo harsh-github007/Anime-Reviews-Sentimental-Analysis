@@ -1,0 +1,12 @@
+# the scraped reviews stay out of the repository (MyAnimeList terms; they include usernames)
+data/
+*.xlsx
+*.csv
+!results/*.csv
+
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+.DS_Store

@@ -1,29 +1,70 @@
-<h1>Anime Comments Scraped from https://myanimelist.net</h1>
+# Sentiment in Anime Reviews: Checked Against the Reviewers' Own Verdicts
 
-<h2>Overview</h2>
-The "Anime Comments Scraped from https://myanimelist.net" dataset is a collection of comments and reviews on various anime titles sourced from the popular anime review website MyAnimeList. The dataset contains over 30,000 comments across various anime titles.<br>
+Can an automatic sentiment tool tell whether an anime review is positive? Every review on MyAnimeList carries the reviewer's own verdict: **Recommended**, **Mixed Feelings** or **Not Recommended**. This project uses those verdicts as ground truth for about 32,000 scraped reviews and measures how well common sentiment methods agree with them.
 
-<h2>Data Description</h2>
-The dataset consists of five columns:<br>
-• S.no: Unique identifier for each comment in the dataset.<br>
-• Title: Name of the anime being reviewed.<br>
-• Date of comment: The date when the comment was posted.<br>
-• User name: The username of the person who posted the comment.<br>
-• Text: The actual comment or review left by the user on the anime in question.<br>
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_analysis.ipynb)
 
-<h2>Potential Use Cases</h2>
-The "Anime Comments Scraped from https://myanimelist.net" dataset is a valuable resource for anyone interested in exploring the world of anime. Some of the potential use cases of the dataset are:<br>
+> **Results:** see [`results/results.md`](results/results.md) once the analysis has been run on the data.
 
-• Anime Analysis: Researchers and analysts can use the dataset to gain insights into the opinions and sentiments of anime fans towards various titles. For example, one can use the dataset to analyze which anime titles are the most popular or controversial among fans, and why. Similarly, researchers can analyze how the opinions and sentiments of anime fans have changed over time for specific anime titles.<br>
+## Why it's hard
 
-• Recommendation Systems: The dataset can be used to build recommendation systems for anime fans. By analyzing the text column of the dataset, one can extract information about what anime fans like or dislike about certain anime titles. This information can then be used to build recommendation systems that suggest new anime titles to fans based on their preferences.<br>
+Reviews are long, and they rarely stay on one side. A review that ends "not recommended" often praises the art, the soundtrack or the first few episodes before explaining what went wrong. Methods that count positive and negative words see all that praise and call the review positive. The reviewer's verdict shows what they actually concluded.
 
-• Sentiment Analysis: The dataset can also be used to build natural language processing (NLP) models for sentiment analysis. By training NLP models on the comments and reviews in the dataset, researchers can build algorithms that automatically classify comments as positive, negative, or neutral. These models can then be used to analyze large volumes of comments and reviews quickly and efficiently.<br>
+## Method
 
-• Network Analysis: The dataset can be used to perform network analyses of the relationships between anime titles and users. By analyzing which anime titles are reviewed or commented on by which users, one can identify clusters of users with similar tastes in anime. These clusters can then be used to build communities of anime fans with similar tastes and to facilitate discussions and recommendations between these users.<br>
+1. **Load** ([`data.py`](src/animesent/data.py)).
+   - Each review's tag is mapped to its verdict. Tags such as "Recommended Preliminary (3/12 eps)" are read by the phrase they contain.
+   - Reviews with no verdict, empty text or duplicate text are dropped, and page furniture such as "Read more" is removed.
+   - Usernames are replaced with a one-way hash.
+2. **Score** every review with three off-the-shelf methods that need no training ([`methods.py`](src/animesent/methods.py)):
+   - **TextBlob**, the method used in the 2023 version of this project.
+   - **VADER**, a rule-based scorer built for short social media text.
+   - **SiEBERT** (optional, needs a GPU), a RoBERTa-large model fine-tuned on reviews. Reviews longer than its 512-token window are judged on their opening and closing parts, where reviewers usually state their overall view.
+3. **Train** a fourth method on the verdicts themselves: TF-IDF word and two-word features with logistic regression.
+4. **Evaluate** ([`evaluate.py`](src/animesent/evaluate.py)):
+   - **Main test:** Recommended vs Not Recommended. Mixed Feelings reviews are left out, since neither answer is right for them.
+   - **Cross-validation is split by show.** Five folds, and each review is scored by a model that never saw any review of that show. Otherwise the trained model could learn show names instead of sentiment.
+   - **Off-the-shelf methods are scored twice:** at the cut-off they are normally used with (TextBlob above 0, VADER at 0.05 or above, SiEBERT above 50%) and at a cut-off tuned on the training folds only.
+   - **Metrics:** ROC AUC measures how well a score separates the two verdicts at any cut-off. Balanced accuracy averages the hit rate on each verdict, so a method that calls everything positive scores 50%.
+   - **Confidence intervals** resample whole shows (a cluster bootstrap), because reviews of the same show are not independent.
+   - **Three verdicts:** the trained model is also tested on all three tags.
+5. **By show:** for shows with at least 40 reviews, the share of reviewers who recommend the show (with a Wilson interval), compared with what TextBlob and the trained model would report.
 
-<h2>Acknowledgements</h2>
-The dataset was scraped using the Octoparse software, which is a powerful web scraping tool used to extract data from websites. We acknowledge the creators and maintainers of the MyAnimeList website for providing an excellent platform for anime enthusiasts to share their opinions and reviews on various anime titles.
+## Running it
 
-<h2>License</h2>
-This dataset is released under the CC BY-SA 4.0 license. If you use this dataset, please provide attribution to the source by citing this repository.
+**In Colab (recommended):** click the badge above. The notebook reads `Anime Reviews.xlsx` from your Google Drive, or asks you to upload it, and runs everything. Turn on a GPU to include SiEBERT.
+
+**Locally** (Python 3.10+):
+
+```bash
+pip install -e ".[test]"               # add ,model for the transformer
+python -m animesent --data "Anime Reviews.xlsx"
+python -m pytest                        # 17 tests on synthetic reviews
+```
+
+Outputs go to `results/`: `results.md`, `metrics.json`, `by_show.csv` and three charts. They hold aggregate numbers only, no review text or usernames.
+
+## Data
+
+About 32,000 reviews scraped from [MyAnimeList](https://myanimelist.net) with Octoparse in February 2023. Each row has the show title, date, username, verdict tag and review text.
+
+**The raw reviews are not in this repository.** They were written by MyAnimeList users, whose terms don't allow them to be republished, and they include usernames. Only derived results are published here.
+
+```
+src/animesent/data.py       loading, verdict labels, anonymisation
+src/animesent/methods.py    TextBlob, VADER, SiEBERT
+src/animesent/evaluate.py   cross-validation, metrics, per-show results
+src/animesent/report.py     charts and results.md
+notebooks/run_analysis.ipynb
+tests/                      pytest suite on synthetic reviews
+```
+
+## Changes from the 2023 version
+
+The first version scored every review with TextBlob and reported that 91.1% were positive and 8.9% negative. That figure measured TextBlob, not the reviews:
+- **Nothing checked it.** TextBlob averages the polarity of English words, and a long review almost always contains some positive ones. The reviewers' own verdicts were in the data all along but went unused.
+- **The text cleaning was written for tweets.** It removed @mentions, "RT" and hashtags, which reviews don't contain.
+- **The "sorted" review listings weren't sorted.** They looped over the sorted table by its original row labels, so they printed in the original order.
+- **The notebook printed about 29,000 reviews,** which made it 8 MB and published other users' text.
+
+The project was rebuilt to test methods against the verdicts. The original notebook remains in the git history.
