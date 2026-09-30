@@ -1,0 +1,108 @@
+{
+  "scraped": "2026-09-30T06:03:13Z",
+  "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
+  "chart": "top airing",
+  "reviews": 661,
+  "anime": [
+    {
+      "anime_id": 61316,
+      "top_rank": 1,
+      "title": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+      "mal_title": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+      "score": 9.11,
+      "members": 337793,
+      "season": null,
+      "reviews": 83
+    },
+    {
+      "anime_id": 61469,
+      "top_rank": 2,
+      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "mal_title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "score": 9.07,
+      "members": 239562,
+      "season": null,
+      "reviews": 2
+    },
+    {
+      "anime_id": 60636,
+      "top_rank": 3,
+      "title": "Bleach: Sennen Kessen-hen - Kashin-tan",
+      "mal_title": "Bleach: Sennen Kessen-hen - Kashin-tan",
+      "score": 9.03,
+      "members": 172158,
+      "season": null,
+      "reviews": 31
+    },
+    {
+      "anime_id": 21,
+      "top_rank": 4,
+      "title": "One Piece",
+      "mal_title": "One Piece",
+      "score": 8.72,
+      "members": 2731788,
+      "season": null,
+      "reviews": 500
+    },
+    {
+      "anime_id": 50250,
+      "top_rank": 5,
+      "title": "Chiikawa",
+      "mal_title": "Chiikawa",
+      "score": 8.62,
+      "members": 26463,
+      "season": null,
+      "reviews": 8
+    },
+    {
+      "anime_id": 63832,
+      "top_rank": 6,
+      "title": "Seihantai na Kimi to Boku 2nd Season",
+      "mal_title": "Seihantai na Kimi to Boku 2nd Season",
+      "score": 8.51,
+      "members": 120635,
+      "season": null,
+      "reviews": 18
+    },
+    {
+      "anime_id": 61607,
+      "top_rank": 7,
+      "title": "Shiguang Dailiren III",
+      "mal_title": "Shiguang Dailiren III",
+      "score": 8.51,
+      "members": 39409,
+      "season": null,
+      "reviews": 2
+    },
+    {
+      "anime_id": 55809,
+      "top_rank": 8,
+      "title": "Xian Ni",
+      "mal_title": "Xian Ni",
+      "score": 8.49,
+      "members": 12988,
+      "season": null,
+      "reviews": 13
+    },
+    {
+      "anime_id": 60988,
+      "top_rank": 9,
+      "title": "Tian Guan Cifu Short Films",
+      "mal_title": "Tian Guan Cifu Short Films",
+      "score": 8.47,
+      "members": 12588,
+      "season": null,
+      "reviews": 0
+    },
+    {
+      "anime_id": 51039,
+      "top_rank": 10,
+      "title": "Doupo Cangqiong: Nian Fan",
+      "mal_title": "Doupo Cangqiong: Nian Fan",
+      "score": 8.39,
+      "members": 12920,
+      "season": null,
+      "reviews": 4
+    }
+  ]
+}

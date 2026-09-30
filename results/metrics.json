@@ -1,0 +1,183 @@
+{
+  "data": {
+    "rows": 661,
+    "unknown_tag": 0,
+    "unknown_tag_examples": [],
+    "empty_text": 0,
+    "duplicates": 1,
+    "kept": 660
+  },
+  "counts": {
+    "Recommended": 465,
+    "Mixed Feelings": 74,
+    "Not Recommended": 121
+  },
+  "reviews": 660,
+  "titles": 9,
+  "median_words": {
+    "Recommended": 242.0,
+    "Mixed Feelings": 425.0,
+    "Not Recommended": 396.0
+  },
+  "original": {
+    "textblob_positive_share": 0.9106060606060606,
+    "textblob_negative_share": 0.08787878787878788,
+    "textblob_neutral_share": 0.0015151515151515152,
+    "actual_recommended_share": 0.7045454545454546,
+    "not_recommended_called_positive": 0.6528925619834711
+  },
+  "binary": {
+    "n": 586,
+    "recommended": 465,
+    "not_recommended": 121
+  },
+  "methods": {
+    "TextBlob": {
+      "auc": 0.9043988269794722,
+      "auc_ci": [
+        0.8865927419354839,
+        0.9436773752563228
+      ],
+      "default_cut": 0.0,
+      "at_default": {
+        "balanced_accuracy": 0.6628010308362214,
+        "macro_f1": 0.698230021929444,
+        "caught_negative": 0.34710743801652894,
+        "caught_positive": 0.978494623655914,
+        "called_positive": 0.9112627986348123
+      },
+      "at_tuned": {
+        "balanced_accuracy": 0.8395361237003466,
+        "macro_f1": 0.8075767710550319,
+        "caught_negative": 0.8016528925619835,
+        "caught_positive": 0.8774193548387097,
+        "called_positive": 0.7372013651877133
+      },
+      "balanced_accuracy_ci": [
+        0.5994663016721841,
+        0.75
+      ]
+    },
+    "VADER": {
+      "auc": 0.8250155514085132,
+      "auc_ci": [
+        0.7246438076228495,
+        0.891869542886492
+      ],
+      "default_cut": 0.05,
+      "at_default": {
+        "balanced_accuracy": 0.7251843952723718,
+        "macro_f1": 0.7506445395609622,
+        "caught_negative": 0.5041322314049587,
+        "caught_positive": 0.946236559139785,
+        "called_positive": 0.8532423208191127
+      },
+      "at_tuned": {
+        "balanced_accuracy": 0.7165822447347374,
+        "macro_f1": 0.7351315885397682,
+        "caught_negative": 0.5041322314049587,
+        "caught_positive": 0.9290322580645162,
+        "called_positive": 0.8395904436860068
+      },
+      "balanced_accuracy_ci": [
+        0.6666666666666666,
+        0.7661361173045956
+      ]
+    },
+    "Trained on verdicts": {
+      "auc": 0.8939838265351462,
+      "auc_ci": [
+        0.8746280854350459,
+        0.981687533260727
+      ],
+      "default_cut": 0.5,
+      "at_default": {
+        "balanced_accuracy": 0.7079178885630498,
+        "macro_f1": 0.7405603693631017,
+        "caught_negative": 0.45454545454545453,
+        "caught_positive": 0.9612903225806452,
+        "called_positive": 0.8754266211604096
+      },
+      "at_tuned": {
+        "balanced_accuracy": 0.8081222785035103,
+        "macro_f1": 0.7747597693786035,
+        "caught_negative": 0.7603305785123967,
+        "caught_positive": 0.8559139784946237,
+        "called_positive": 0.7286689419795221
+      },
+      "balanced_accuracy_ci": [
+        0.672191456871352,
+        0.8954051620648259
+      ]
+    }
+  },
+  "best_method": "TextBlob",
+  "three_way": {
+    "macro_f1": 0.47851703752352664,
+    "balanced_accuracy": 0.4860353555368218,
+    "labels": [
+      "Recommended",
+      "Mixed Feelings",
+      "Not Recommended"
+    ],
+    "confusion": [
+      [
+        445,
+        2,
+        18
+      ],
+      [
+        53,
+        1,
+        20
+      ],
+      [
+        62,
+        0,
+        59
+      ]
+    ]
+  },
+  "by_title": {
+    "titles": 3,
+    "min_reviews": 20,
+    "rank_corr_textblob": 1.0,
+    "rank_corr_model": -0.5
+  },
+  "top_words": {
+    "Recommended": [
+      "amazing",
+      "love",
+      "10 10",
+      "very",
+      "best",
+      "the best",
+      "peak",
+      "you",
+      "unique",
+      "anime and",
+      "awesome",
+      "cour",
+      "incredible",
+      "different",
+      "though"
+    ],
+    "Not Recommended": [
+      "worst",
+      "the worst",
+      "bad",
+      "same",
+      "minutes",
+      "stupid",
+      "plot",
+      "worse",
+      "boring",
+      "show",
+      "the same",
+      "any",
+      "waste",
+      "no",
+      "repetitive"
+    ]
+  }
+}
