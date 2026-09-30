@@ -73,11 +73,11 @@
         "called_positive": 0.8070175438596491
       },
       "at_tuned": {
-        "balanced_accuracy": 0.6907277628032344,
-        "macro_f1": 0.6844496670583626,
+        "balanced_accuracy": 0.6878706199460917,
+        "macro_f1": 0.6804401993355482,
         "caught_negative": 0.5471698113207547,
-        "caught_positive": 0.8342857142857143,
-        "called_positive": 0.7456140350877193
+        "caught_positive": 0.8285714285714286,
+        "called_positive": 0.7412280701754386
       },
       "balanced_accuracy_ci": [
         0.6602003832926665,
@@ -85,36 +85,36 @@
       ]
     },
     "Trained on verdicts": {
-      "auc": 0.8638274932614555,
+      "auc": 0.8589757412398922,
       "auc_ci": [
-        0.7741188909774436,
-        0.9327077462276604
+        0.7724690934065934,
+        0.930961482531157
       ],
       "default_cut": 0.5,
       "at_default": {
-        "balanced_accuracy": 0.6932614555256065,
-        "macro_f1": 0.7271276595744681,
-        "caught_negative": 0.41509433962264153,
-        "caught_positive": 0.9714285714285714,
-        "called_positive": 0.881578947368421
+        "balanced_accuracy": 0.6895417789757412,
+        "macro_f1": 0.7265531302470616,
+        "caught_negative": 0.39622641509433965,
+        "caught_positive": 0.9828571428571429,
+        "called_positive": 0.8947368421052632
       },
       "at_tuned": {
-        "balanced_accuracy": 0.8208086253369272,
-        "macro_f1": 0.7740443605474281,
-        "caught_negative": 0.8301886792452831,
-        "caught_positive": 0.8114285714285714,
-        "called_positive": 0.6622807017543859
+        "balanced_accuracy": 0.7576280323450135,
+        "macro_f1": 0.7314224010994405,
+        "caught_negative": 0.6981132075471698,
+        "caught_positive": 0.8171428571428572,
+        "called_positive": 0.6973684210526315
       },
       "balanced_accuracy_ci": [
-        0.6469354459738055,
+        0.6394357401127487,
         0.8560439560439561
       ]
     }
   },
   "best_method": "TextBlob",
   "three_way": {
-    "macro_f1": 0.46117298555408076,
-    "balanced_accuracy": 0.4703683737646001,
+    "macro_f1": 0.46693843790617984,
+    "balanced_accuracy": 0.4659860056086471,
     "labels": [
       "Recommended",
       "Mixed Feelings",
@@ -122,19 +122,19 @@
     ],
     "confusion": [
       [
-        171,
-        0,
+        170,
+        1,
         4
       ],
       [
-        27,
-        0,
+        26,
+        1,
         6
       ],
       [
-        30,
+        32,
         0,
-        23
+        21
       ]
     ]
   },

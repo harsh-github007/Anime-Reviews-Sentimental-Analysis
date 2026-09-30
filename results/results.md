@@ -55,7 +55,7 @@ Recommended vs Not Recommended: 228 reviews (175 vs 53). Five-fold cross-validat
 | --- | ---: | ---: | ---: | ---: |
 | TextBlob | 0.87 (0.83–0.94) | 61% | 80% | 25% |
 | VADER | 0.81 (0.72–0.89) | 71% | 69% | 51% |
-| Trained on verdicts | 0.86 (0.77–0.93) | 69% | 82% | 42% |
+| Trained on verdicts | 0.86 (0.77–0.93) | 69% | 76% | 40% |
 
 Best at separating the verdicts: **TextBlob**.
 
@@ -63,13 +63,13 @@ Best at separating the verdicts: **TextBlob**.
 
 ## Three verdicts
 
-Trained on all three tags, the model reaches a macro F1 of 0.46 and balanced accuracy of 47%. Rows are the reviewer's tag, columns the model's guess:
+Trained on all three tags, the model reaches a macro F1 of 0.47 and balanced accuracy of 47%. Rows are the reviewer's tag, columns the model's guess:
 
 | | Recommended | Mixed Feelings | Not Recommended |
 | --- | ---: | ---: | ---: |
-| **Recommended** | 171 | 0 | 4 |
-| **Mixed Feelings** | 27 | 0 | 6 |
-| **Not Recommended** | 30 | 0 | 23 |
+| **Recommended** | 170 | 1 | 4 |
+| **Mixed Feelings** | 26 | 1 | 6 |
+| **Not Recommended** | 32 | 0 | 21 |
 
 ## By show
 
