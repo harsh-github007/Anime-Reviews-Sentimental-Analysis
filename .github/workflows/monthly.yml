@@ -34,7 +34,7 @@ jobs:
       - name: Install
         run: pip install -e .
       - name: Download reviews from MyAnimeList
-        run: python -m animesent scrape --top "${{ github.event.inputs.top || '10' }}" --min-reviews 0 --max-pages 5 --out data/reviews.csv
+        run: python -m animesent scrape --top "${{ github.event.inputs.top || '10' }}" --min-reviews 0 --limit 100 --out data/reviews.csv
       - name: Analyse
         run: python -m animesent --data data/reviews.csv --min-reviews 20 --out results
       - name: Commit results

@@ -122,8 +122,8 @@ def mal_row(anime, rv):
             "helpful": None, "text": rv["text"]}
 
 
-def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
-    """An anime's reviews read from MyAnimeList's review pages (20 a page)."""
+def reviews_mal(anime, max_pages=60, fetch_html=None, pause=None, sleep=None, limit=None):
+    """An anime's reviews read from MyAnimeList's review pages (20 a page), newest `limit` kept."""
     fetch_html, sleep = fetch_html or mal_pages.get_html, sleep or time.sleep
     pause = mal_pages.PAUSE if pause is None else pause
     rows = []
@@ -142,14 +142,16 @@ def reviews_mal(anime, max_pages=25, fetch_html=None, pause=None, sleep=None):
         rows += [mal_row(anime, rv) for rv in found]
         if len(found) < 20:
             break
+    if limit:
+        rows = sorted(rows, key=lambda r: r["date"] or "", reverse=True)[:limit]
     return rows
 
 
 CANDIDATES = 50  # how far down the chart to look for shows with enough reviews (one chart page)
 
 
-def scrape(top=10, filter_="airing", max_pages=5, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
-           source="auto", fetch_html=None, min_reviews=0):
+def scrape(top=10, filter_="airing", max_pages=60, out="data/reviews.csv", get_json=None, pause=None, sleep=None,
+           source="auto", fetch_html=None, min_reviews=0, limit=100):
     """The `top` highest-ranked anime on the chart that have at least `min_reviews` reviews, and their reviews.
 
     New and niche shows can sit high on the chart with only a handful of reviews, which is
@@ -187,7 +189,8 @@ def scrape(top=10, filter_="airing", max_pages=5, out="data/reviews.csv", get_js
 
     rows, kept, skipped = [], [], []
     for a in chosen:
-        got = reviews_mal(a, max_pages, fetch_html, pause, sleep) if use_mal else reviews(a, max_pages, get_json, pause, sleep)
+        got = (reviews_mal(a, max_pages, fetch_html, pause, sleep, limit) if use_mal
+               else sorted(reviews(a, max_pages, get_json, pause, sleep), key=lambda r: r["date"] or "", reverse=True)[:limit])
         a["reviews"] = len(got)
         keep = len(got) >= min_reviews
         note = "" if keep else "  (too few, skipped)"
@@ -211,7 +214,7 @@ def scrape(top=10, filter_="airing", max_pages=5, out="data/reviews.csv", get_js
         w.writeheader()
         w.writerows(rows)
     info = {"scraped": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "MyAnimeList (" + ", ".join(used) + ")",
-            "chart": f"top {filter_}", "min_reviews": min_reviews, "max_reviews_per_anime": max_pages * PER_PAGE,
+            "chart": f"top {filter_}", "min_reviews": min_reviews, "max_reviews_per_anime": limit,
             "reviews": len(rows), "anime": chosen, "skipped": skipped}
     (out.parent / "scrape_info.json").write_text(json.dumps(info, indent=2))
     print(f"Saved {len(rows):,} reviews to {out}")
@@ -223,14 +226,15 @@ def main(argv=None):
     p.add_argument("--top", type=int, default=10, help="how many anime to take from the chart (default 10)")
     p.add_argument("--filter", default="airing", choices=["airing", "upcoming", "bypopularity", "favorite"],
                    help="which MyAnimeList chart: airing = the top-scored shows airing now (default)")
-    p.add_argument("--max-pages", type=int, default=5, help="review pages per anime, newest first, 20 reviews each (default 5, so the latest 100)")
+    p.add_argument("--limit", type=int, default=100, help="keep each anime's newest N reviews (default 100)")
+    p.add_argument("--max-pages", type=int, default=60, help="review pages to read per anime to find the newest, 20 each (default 60)")
     p.add_argument("--min-reviews", type=int, default=0, help="skip shows with fewer reviews than this (default 0: keep the top 10 as they are)")
     p.add_argument("--out", default="data/reviews.csv")
     p.add_argument("--source", default="auto", choices=["auto", "jikan", "mal"],
                    help="auto = Jikan, falling back to MyAnimeList's own pages when Jikan can't reach it (default)")
     a = p.parse_args(argv)
     try:
-        scrape(a.top, a.filter, a.max_pages, a.out, source=a.source, min_reviews=a.min_reviews)
+        scrape(a.top, a.filter, a.max_pages, a.out, source=a.source, min_reviews=a.min_reviews, limit=a.limit)
     except Exception as err:  # noqa: BLE001 - report any failure in one readable line
         notice("error", f"Scrape stopped: {type(err).__name__}: {err}")
         sys.exit(1)

@@ -14,7 +14,7 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
 
 1. **Download** ([`scrape.py`](src/animesent/scrape.py)).
    - Takes the top 10 of MyAnimeList's "top airing" chart, the best-scored shows currently on air.
-   - Fetches each one's latest reviews, newest first, up to 100 per show (`--max-pages` raises the limit), including preliminary reviews written before the show finished.
+   - Keeps each one's newest 100 reviews (`--limit` changes this), including preliminary reviews written before the show finished.
    - Uses [Jikan](https://jikan.moe), a public read-only API over MyAnimeList data, and stays under its limits (fewer than one request a second). Jikan fetches from MyAnimeList live and often times out, so every request is retried with a growing wait.
    - When Jikan can't reach MyAnimeList, it reads MyAnimeList's own chart and review pages instead ([`mal_pages.py`](src/animesent/mal_pages.py)). These pages are open to general crawlers under MyAnimeList's robots.txt. Requests name the project in their user agent and are spaced 3 seconds apart, and the scraper stops if MyAnimeList refuses them.
 2. **Load** ([`data.py`](src/animesent/data.py)).

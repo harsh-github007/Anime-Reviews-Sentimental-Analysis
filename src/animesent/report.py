@@ -138,8 +138,9 @@ def latest_section(cmp):
 
 def scrape_intro(scrape):
     """One sentence on how the anime were chosen, naming any that were skipped."""
-    text = (f"The {len(scrape['anime'])} highest-ranked anime on MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]} "
-            f"with at least {scrape.get('min_reviews', 20)} reviews, and up to {scrape.get('max_reviews_per_anime', 200)} of each one's reviews.")
+    text = (f"The top {len(scrape['anime'])} anime on MyAnimeList's {scrape['chart']} chart on {scrape['scraped'][:10]}, "
+            + (f"with at least {scrape['min_reviews']} reviews, " if scrape.get('min_reviews') else "")
+            + f"and each one's newest {scrape.get('max_reviews_per_anime', 100)} reviews.")
     skipped = scrape.get("skipped") or []
     if skipped:
         names = ", ".join(f"{x['title']} ({x['reviews']})" for x in skipped)
