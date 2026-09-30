@@ -17,7 +17,7 @@ Reviews are long, and they rarely stay on one side. A review that ends "not reco
    - Reviews with no verdict, empty text or duplicate text are dropped, and page furniture such as "Read more" is removed.
    - Usernames are replaced with a one-way hash.
 2. **Score** every review with three off-the-shelf methods that need no training ([`methods.py`](src/animesent/methods.py)):
-   - **TextBlob**, the method used in the 2023 version of this project.
+   - **TextBlob**, a widely used scorer that averages the polarity of English words.
    - **VADER**, a rule-based scorer built for short social media text.
    - **SiEBERT** (optional, needs a GPU), a RoBERTa-large model fine-tuned on reviews. Reviews longer than its 512-token window are judged on their opening and closing parts, where reviewers usually state their overall view.
 3. **Train** a fourth method on the verdicts themselves: TF-IDF word and two-word features with logistic regression.
@@ -58,13 +58,3 @@ src/animesent/report.py     charts and results.md
 notebooks/run_analysis.ipynb
 tests/                      pytest suite on synthetic reviews
 ```
-
-## Changes from the 2023 version
-
-The first version scored every review with TextBlob and reported that 91.1% were positive and 8.9% negative. That figure measured TextBlob, not the reviews:
-- **Nothing checked it.** TextBlob averages the polarity of English words, and a long review almost always contains some positive ones. The reviewers' own verdicts were in the data all along but went unused.
-- **The text cleaning was written for tweets.** It removed @mentions, "RT" and hashtags, which reviews don't contain.
-- **The "sorted" review listings weren't sorted.** They looped over the sorted table by its original row labels, so they printed in the original order.
-- **The notebook printed about 29,000 reviews,** which made it 8 MB and published other users' text.
-
-The project was rebuilt to test methods against the verdicts. The original notebook remains in the git history.

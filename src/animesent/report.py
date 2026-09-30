@@ -104,8 +104,8 @@ def write_markdown(res, info, by_title, out):
         + ", ".join(f"{k} ({v:,})" for k, v in res["counts"].items()) + ".",
         f"Dropped before analysis: {info.get('unknown_tag', 0):,} with no verdict tag, {info.get('empty_text', 0):,} empty, "
         f"{info.get('duplicates', 0):,} duplicates.", "",
-        "## The original result, re-checked", "",
-        f"TextBlob calls {pct(o['textblob_positive_share'], 1)} of reviews positive, the 2023 headline. "
+        "## What TextBlob says", "",
+        f"TextBlob calls {pct(o['textblob_positive_share'], 1)} of reviews positive. "
         f"The reviewers themselves recommend {pct(o['actual_recommended_share'], 1)} of the shows they review, "
         f"and TextBlob scores {pct(o['not_recommended_called_positive'])} of **Not Recommended** reviews as positive.", "",
         "![TextBlob polarity by verdict](figures/textblob_by_verdict.png)", "",
