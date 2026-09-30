@@ -1,73 +1,70 @@
 # Results
 
-660 reviews of 9 shows, each tagged by its author as Recommended (465), Mixed Feelings (74), Not Recommended (121).
-Dropped before analysis: 0 with no verdict tag, 0 empty, 1 duplicates.
+446 reviews of 5 shows, each tagged by its author as Recommended (312), Mixed Feelings (42), Not Recommended (92).
+Dropped before analysis: 0 with no verdict tag, 0 empty, 0 duplicates.
 
 ## The anime
 
-The top 10 of MyAnimeList's top airing chart on 2026-09-30, with every review of each (up to 500):
+The 5 highest-ranked anime on MyAnimeList's top airing chart on 2026-09-30 with at least 20 reviews, and up to 200 of each one's reviews. Skipped for having too few reviews: Steel Ball Run: JoJo no Kimyou na Bouken (2), Chiikawa (8), Seihantai na Kimi to Boku 2nd Season (18), Shiguang Dailiren III (2), Xian Ni (13), Tian Guan Cifu Short Films (0), Doupo Cangqiong: Nian Fan (4), Tunshi Xingkong 4th Season (4), Mushen Ji (6), Guangyin Zhi Wai 2 (0), Yuanshen: Donghua Duanpian (2), Fanren Xiu Xian Zhuan: Mulan Zhi Zhan (0), Douluo Dalu II: Jueshi Tangmen (3), Wanmei Shijie (14), Benghuai: Xing Qiong Tiedao - Donghua Duanpian (0), Crayon Shin-chan (16), Doraemon (2005) (3), Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou (6), Cang Yuan Tu 3 (0), Zhe Tian (8).
 
-| # | Anime | MAL score | Reviews |
+| Chart rank | Anime | MAL score | Reviews |
 | ---: | --- | ---: | ---: |
 | 1 | Re:Zero kara Hajimeru Isekai Seikatsu 4th Season | 9.11 | 83 |
-| 2 | Steel Ball Run: JoJo no Kimyou na Bouken | 9.07 | 2 |
 | 3 | Bleach: Sennen Kessen-hen - Kashin-tan | 9.03 | 31 |
-| 4 | One Piece | 8.72 | 500 |
-| 5 | Chiikawa | 8.62 | 8 |
-| 6 | Seihantai na Kimi to Boku 2nd Season | 8.51 | 18 |
-| 7 | Shiguang Dailiren III | 8.51 | 2 |
-| 8 | Xian Ni | 8.49 | 13 |
-| 9 | Tian Guan Cifu Short Films | 8.47 | 0 |
-| 10 | Doupo Cangqiong: Nian Fan | 8.39 | 4 |
+| 4 | One Piece | 8.72 | 200 |
+| 13 | Meitantei Conan | 8.18 | 102 |
+| 14 | Holo no Graffiti | 8.13 | 30 |
 
 ## What TextBlob says
 
-TextBlob calls 91.1% of reviews positive. The reviewers themselves recommend 70.5% of the shows they review, and TextBlob scores 65% of **Not Recommended** reviews as positive.
+TextBlob calls 91.7% of reviews positive. The reviewers themselves recommend 70.0% of the shows they review, and TextBlob scores 70% of **Not Recommended** reviews as positive.
 
 ![TextBlob polarity by verdict](figures/textblob_by_verdict.png)
 
 ## How well each method matches the verdict
 
-Recommended vs Not Recommended: 586 reviews (465 vs 121). Five-fold cross-validation split by show, so every review is scored by a model that never saw that show. Balanced accuracy averages the hit rate on each verdict, so always answering "Recommended" scores 50%.
+Recommended vs Not Recommended: 404 reviews (312 vs 92). Five-fold cross-validation split by show, so every review is scored by a model that never saw that show. Balanced accuracy averages the hit rate on each verdict, so always answering "Recommended" scores 50%.
 
 | Method | ROC AUC (95% CI) | Balanced accuracy, usual cut-off | Balanced accuracy, tuned cut-off | Not Recommended caught |
 | --- | ---: | ---: | ---: | ---: |
-| TextBlob | 0.90 (0.89–0.94) | 66% | 84% | 35% |
-| VADER | 0.83 (0.72–0.89) | 73% | 72% | 50% |
-| Trained on verdicts | 0.89 (0.87–0.98) | 71% | 81% | 45% |
+| TextBlob | 0.89 (0.81–0.91) | 64% | 82% | 30% |
+| VADER | 0.79 (0.69–0.82) | 71% | 68% | 50% |
+| Trained on verdicts | 0.89 (0.86–0.96) | 74% | 77% | 51% |
 
-Best at separating the verdicts: **TextBlob**.
+Best at separating the verdicts: **Trained on verdicts**.
 
 ![Methods](figures/methods.png)
 
 ## Three verdicts
 
-Trained on all three tags, the model reaches a macro F1 of 0.48 and balanced accuracy of 49%. Rows are the reviewer's tag, columns the model's guess:
+Trained on all three tags, the model reaches a macro F1 of 0.49 and balanced accuracy of 50%. Rows are the reviewer's tag, columns the model's guess:
 
 | | Recommended | Mixed Feelings | Not Recommended |
 | --- | ---: | ---: | ---: |
-| **Recommended** | 445 | 2 | 18 |
-| **Mixed Feelings** | 53 | 1 | 20 |
-| **Not Recommended** | 62 | 0 | 59 |
+| **Recommended** | 301 | 1 | 10 |
+| **Mixed Feelings** | 32 | 0 | 10 |
+| **Not Recommended** | 43 | 0 | 49 |
 
 ## By show
 
-Shows with at least 20 reviews (3). Rank correlation with the share of reviewers who recommend the show: TextBlob 1.00, trained model -0.50.
+Shows with at least 20 reviews (5).
 
 ![Shows](figures/titles.png)
 
 | Show | Reviews | Recommended (95% CI) | Not Recommended | TextBlob positive |
 | --- | ---: | ---: | ---: | ---: |
+| Meitantei Conan | 102 | 88% (81%–93%) | 4% | 99% |
 | Bleach: Sennen Kessen-hen - Kashin-tan | 31 | 71% (53%–84%) | 23% | 94% |
-| One Piece | 499 | 70% (66%–74%) | 18% | 91% |
 | Re:Zero kara Hajimeru Isekai Seikatsu 4th Season | 83 | 66% (56%–76%) | 23% | 88% |
+| Holo no Graffiti | 30 | 63% (46%–78%) | 27% | 100% |
+| One Piece | 200 | 63% (56%–69%) | 27% | 88% |
 
 ## What the trained model listens to
 
 Words and phrases with the largest weights toward each verdict:
 
-- **Recommended:** amazing, love, 10 10, very, best, the best, peak, you, unique, anime and, awesome, cour, incredible, different, though
-- **Not Recommended:** worst, the worst, bad, same, minutes, stupid, plot, worse, boring, show, the same, any, waste, no, repetitive
+- **Recommended:** conan, detective, detective conan, best, the best, amazing, 10 10, peak, cour, its, masterpiece, anime and, well, one of, mystery
+- **Not Recommended:** same, the same, bad, the worst, waste, worst, pacing, boring, any, minutes, worse, they, over, horrible, plot
 
 ## Caveats
 

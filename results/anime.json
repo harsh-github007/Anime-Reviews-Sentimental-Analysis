@@ -1,8 +1,10 @@
 {
-  "scraped": "2026-09-30T06:03:13Z",
+  "scraped": "2026-09-30T06:10:58Z",
   "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
   "chart": "top airing",
-  "reviews": 661,
+  "min_reviews": 20,
+  "max_reviews_per_anime": 200,
+  "reviews": 446,
   "anime": [
     {
       "anime_id": 61316,
@@ -13,16 +15,6 @@
       "members": 337793,
       "season": null,
       "reviews": 83
-    },
-    {
-      "anime_id": 61469,
-      "top_rank": 2,
-      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
-      "mal_title": "Steel Ball Run: JoJo no Kimyou na Bouken",
-      "score": 9.07,
-      "members": 239562,
-      "season": null,
-      "reviews": 2
     },
     {
       "anime_id": 60636,
@@ -42,67 +34,129 @@
       "score": 8.72,
       "members": 2731788,
       "season": null,
-      "reviews": 500
+      "reviews": 200
     },
     {
-      "anime_id": 50250,
-      "top_rank": 5,
-      "title": "Chiikawa",
-      "mal_title": "Chiikawa",
-      "score": 8.62,
-      "members": 26463,
+      "anime_id": 235,
+      "top_rank": 13,
+      "title": "Meitantei Conan",
+      "mal_title": "Meitantei Conan",
+      "score": 8.18,
+      "members": 382163,
       "season": null,
-      "reviews": 8
+      "reviews": 102
     },
     {
-      "anime_id": 63832,
-      "top_rank": 6,
-      "title": "Seihantai na Kimi to Boku 2nd Season",
-      "mal_title": "Seihantai na Kimi to Boku 2nd Season",
-      "score": 8.51,
-      "members": 120635,
+      "anime_id": 44042,
+      "top_rank": 14,
+      "title": "Holo no Graffiti",
+      "mal_title": "Holo no Graffiti",
+      "score": 8.13,
+      "members": 58685,
       "season": null,
-      "reviews": 18
-    },
+      "reviews": 30
+    }
+  ],
+  "skipped": [
     {
-      "anime_id": 61607,
-      "top_rank": 7,
-      "title": "Shiguang Dailiren III",
-      "mal_title": "Shiguang Dailiren III",
-      "score": 8.51,
-      "members": 39409,
-      "season": null,
+      "top_rank": 2,
+      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "reviews": 2
     },
     {
-      "anime_id": 55809,
+      "top_rank": 5,
+      "title": "Chiikawa",
+      "reviews": 8
+    },
+    {
+      "top_rank": 6,
+      "title": "Seihantai na Kimi to Boku 2nd Season",
+      "reviews": 18
+    },
+    {
+      "top_rank": 7,
+      "title": "Shiguang Dailiren III",
+      "reviews": 2
+    },
+    {
       "top_rank": 8,
       "title": "Xian Ni",
-      "mal_title": "Xian Ni",
-      "score": 8.49,
-      "members": 12988,
-      "season": null,
       "reviews": 13
     },
     {
-      "anime_id": 60988,
       "top_rank": 9,
       "title": "Tian Guan Cifu Short Films",
-      "mal_title": "Tian Guan Cifu Short Films",
-      "score": 8.47,
-      "members": 12588,
-      "season": null,
       "reviews": 0
     },
     {
-      "anime_id": 51039,
       "top_rank": 10,
       "title": "Doupo Cangqiong: Nian Fan",
-      "mal_title": "Doupo Cangqiong: Nian Fan",
-      "score": 8.39,
-      "members": 12920,
-      "season": null,
       "reviews": 4
+    },
+    {
+      "top_rank": 11,
+      "title": "Tunshi Xingkong 4th Season",
+      "reviews": 4
+    },
+    {
+      "top_rank": 12,
+      "title": "Mushen Ji",
+      "reviews": 6
+    },
+    {
+      "top_rank": 15,
+      "title": "Guangyin Zhi Wai 2",
+      "reviews": 0
+    },
+    {
+      "top_rank": 16,
+      "title": "Yuanshen: Donghua Duanpian",
+      "reviews": 2
+    },
+    {
+      "top_rank": 17,
+      "title": "Fanren Xiu Xian Zhuan: Mulan Zhi Zhan",
+      "reviews": 0
+    },
+    {
+      "top_rank": 18,
+      "title": "Douluo Dalu II: Jueshi Tangmen",
+      "reviews": 3
+    },
+    {
+      "top_rank": 19,
+      "title": "Wanmei Shijie",
+      "reviews": 14
+    },
+    {
+      "top_rank": 20,
+      "title": "Benghuai: Xing Qiong Tiedao - Donghua Duanpian",
+      "reviews": 0
+    },
+    {
+      "top_rank": 21,
+      "title": "Crayon Shin-chan",
+      "reviews": 16
+    },
+    {
+      "top_rank": 22,
+      "title": "Doraemon (2005)",
+      "reviews": 3
+    },
+    {
+      "top_rank": 23,
+      "title": "Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou",
+      "reviews": 6
+    },
+    {
+      "top_rank": 24,
+      "title": "Cang Yuan Tu 3",
+      "reviews": 0
+    },
+    {
+      "top_rank": 25,
+      "title": "Zhe Tian",
+      "reviews": 8
     }
   ]
 }

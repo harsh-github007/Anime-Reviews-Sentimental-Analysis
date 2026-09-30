@@ -1,120 +1,120 @@
 {
   "data": {
-    "rows": 661,
+    "rows": 446,
     "unknown_tag": 0,
     "unknown_tag_examples": [],
     "empty_text": 0,
-    "duplicates": 1,
-    "kept": 660
+    "duplicates": 0,
+    "kept": 446
   },
   "counts": {
-    "Recommended": 465,
-    "Mixed Feelings": 74,
-    "Not Recommended": 121
+    "Recommended": 312,
+    "Mixed Feelings": 42,
+    "Not Recommended": 92
   },
-  "reviews": 660,
-  "titles": 9,
+  "reviews": 446,
+  "titles": 5,
   "median_words": {
     "Recommended": 242.0,
-    "Mixed Feelings": 425.0,
-    "Not Recommended": 396.0
+    "Mixed Feelings": 441.5,
+    "Not Recommended": 367.5
   },
   "original": {
-    "textblob_positive_share": 0.9106060606060606,
-    "textblob_negative_share": 0.08787878787878788,
-    "textblob_neutral_share": 0.0015151515151515152,
-    "actual_recommended_share": 0.7045454545454546,
-    "not_recommended_called_positive": 0.6528925619834711
+    "textblob_positive_share": 0.9170403587443946,
+    "textblob_negative_share": 0.08071748878923767,
+    "textblob_neutral_share": 0.002242152466367713,
+    "actual_recommended_share": 0.6995515695067265,
+    "not_recommended_called_positive": 0.6956521739130435
   },
   "binary": {
-    "n": 586,
-    "recommended": 465,
-    "not_recommended": 121
+    "n": 404,
+    "recommended": 312,
+    "not_recommended": 92
   },
   "methods": {
     "TextBlob": {
-      "auc": 0.9043988269794722,
+      "auc": 0.8872630992196209,
       "auc_ci": [
-        0.8865927419354839,
-        0.9436773752563228
+        0.8135838267059478,
+        0.9079953045519759
       ],
       "default_cut": 0.0,
       "at_default": {
-        "balanced_accuracy": 0.6628010308362214,
-        "macro_f1": 0.698230021929444,
-        "caught_negative": 0.34710743801652894,
-        "caught_positive": 0.978494623655914,
-        "called_positive": 0.9112627986348123
+        "balanced_accuracy": 0.6425585284280937,
+        "macro_f1": 0.6709025741283805,
+        "caught_negative": 0.30434782608695654,
+        "caught_positive": 0.9807692307692307,
+        "called_positive": 0.9158415841584159
       },
       "at_tuned": {
-        "balanced_accuracy": 0.8395361237003466,
-        "macro_f1": 0.8075767710550319,
-        "caught_negative": 0.8016528925619835,
-        "caught_positive": 0.8774193548387097,
-        "called_positive": 0.7372013651877133
+        "balanced_accuracy": 0.8223940914158305,
+        "macro_f1": 0.7954134413658396,
+        "caught_negative": 0.782608695652174,
+        "caught_positive": 0.8621794871794872,
+        "called_positive": 0.7153465346534653
       },
       "balanced_accuracy_ci": [
-        0.5994663016721841,
-        0.75
+        0.5585837600278803,
+        0.6681743784455811
       ]
     },
     "VADER": {
-      "auc": 0.8250155514085132,
+      "auc": 0.7851693143812708,
       "auc_ci": [
-        0.7246438076228495,
-        0.891869542886492
+        0.6890361984209743,
+        0.8179771925103566
       ],
       "default_cut": 0.05,
       "at_default": {
-        "balanced_accuracy": 0.7251843952723718,
-        "macro_f1": 0.7506445395609622,
-        "caught_negative": 0.5041322314049587,
-        "caught_positive": 0.946236559139785,
-        "called_positive": 0.8532423208191127
+        "balanced_accuracy": 0.7115384615384616,
+        "macro_f1": 0.7297710507204831,
+        "caught_negative": 0.5,
+        "caught_positive": 0.9230769230769231,
+        "called_positive": 0.8267326732673267
       },
       "at_tuned": {
-        "balanced_accuracy": 0.7165822447347374,
-        "macro_f1": 0.7351315885397682,
-        "caught_negative": 0.5041322314049587,
-        "caught_positive": 0.9290322580645162,
-        "called_positive": 0.8395904436860068
+        "balanced_accuracy": 0.6836677814938684,
+        "macro_f1": 0.6900022568269013,
+        "caught_negative": 0.4891304347826087,
+        "caught_positive": 0.8782051282051282,
+        "called_positive": 0.7945544554455446
       },
       "balanced_accuracy_ci": [
-        0.6666666666666666,
-        0.7661361173045956
+        0.6794540243798912,
+        0.7630624092888243
       ]
     },
     "Trained on verdicts": {
-      "auc": 0.8939838265351462,
+      "auc": 0.8940914158305463,
       "auc_ci": [
-        0.8746280854350459,
-        0.981687533260727
+        0.8564028026237328,
+        0.9612075785414647
       ],
       "default_cut": 0.5,
       "at_default": {
-        "balanced_accuracy": 0.7079178885630498,
-        "macro_f1": 0.7405603693631017,
-        "caught_negative": 0.45454545454545453,
-        "caught_positive": 0.9612903225806452,
-        "called_positive": 0.8754266211604096
+        "balanced_accuracy": 0.7378065774804905,
+        "macro_f1": 0.7707801418439717,
+        "caught_negative": 0.5108695652173914,
+        "caught_positive": 0.9647435897435898,
+        "called_positive": 0.8564356435643564
       },
       "at_tuned": {
-        "balanced_accuracy": 0.8081222785035103,
-        "macro_f1": 0.7747597693786035,
-        "caught_negative": 0.7603305785123967,
-        "caught_positive": 0.8559139784946237,
-        "called_positive": 0.7286689419795221
+        "balanced_accuracy": 0.7740384615384616,
+        "macro_f1": 0.7344055772994129,
+        "caught_negative": 0.75,
+        "caught_positive": 0.7980769230769231,
+        "called_positive": 0.6732673267326733
       },
       "balanced_accuracy_ci": [
-        0.672191456871352,
-        0.8954051620648259
+        0.6719378182792817,
+        0.8444722650231125
       ]
     }
   },
-  "best_method": "TextBlob",
+  "best_method": "Trained on verdicts",
   "three_way": {
-    "macro_f1": 0.47851703752352664,
-    "balanced_accuracy": 0.4860353555368218,
+    "macro_f1": 0.4945652173913044,
+    "balanced_accuracy": 0.4991174284652546,
     "labels": [
       "Recommended",
       "Mixed Feelings",
@@ -122,62 +122,62 @@
     ],
     "confusion": [
       [
-        445,
-        2,
-        18
-      ],
-      [
-        53,
+        301,
         1,
-        20
+        10
       ],
       [
-        62,
+        32,
         0,
-        59
+        10
+      ],
+      [
+        43,
+        0,
+        49
       ]
     ]
   },
   "by_title": {
-    "titles": 3,
+    "titles": 5,
     "min_reviews": 20,
-    "rank_corr_textblob": 1.0,
-    "rank_corr_model": -0.5
+    "rank_corr_textblob": 0.19999999999999998,
+    "rank_corr_model": -0.09999999999999999
   },
   "top_words": {
     "Recommended": [
-      "amazing",
-      "love",
-      "10 10",
-      "very",
+      "conan",
+      "detective",
+      "detective conan",
       "best",
       "the best",
+      "amazing",
+      "10 10",
       "peak",
-      "you",
-      "unique",
-      "anime and",
-      "awesome",
       "cour",
-      "incredible",
-      "different",
-      "though"
+      "its",
+      "masterpiece",
+      "anime and",
+      "well",
+      "one of",
+      "mystery"
     ],
     "Not Recommended": [
-      "worst",
-      "the worst",
-      "bad",
       "same",
-      "minutes",
-      "stupid",
-      "plot",
-      "worse",
-      "boring",
-      "show",
       "the same",
-      "any",
+      "bad",
+      "the worst",
       "waste",
-      "no",
-      "repetitive"
+      "worst",
+      "pacing",
+      "boring",
+      "any",
+      "minutes",
+      "worse",
+      "they",
+      "over",
+      "horrible",
+      "plot"
     ]
   }
 }
