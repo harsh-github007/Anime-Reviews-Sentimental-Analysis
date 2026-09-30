@@ -1,5 +1,5 @@
 {
-  "scraped": "2026-09-30T06:52:09Z",
+  "scraped": "2026-09-30T09:53:12Z",
   "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
   "chart": "top airing",
   "min_reviews": 0,
@@ -12,7 +12,7 @@
       "title": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
       "mal_title": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
       "score": 9.11,
-      "members": 337793,
+      "members": 337865,
       "season": null,
       "reviews": 83
     },
@@ -22,7 +22,7 @@
       "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "mal_title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "score": 9.07,
-      "members": 239562,
+      "members": 239603,
       "season": null,
       "reviews": 2
     },
@@ -32,7 +32,7 @@
       "title": "Bleach: Sennen Kessen-hen - Kashin-tan",
       "mal_title": "Bleach: Sennen Kessen-hen - Kashin-tan",
       "score": 9.03,
-      "members": 172158,
+      "members": 172209,
       "season": null,
       "reviews": 31
     },
@@ -42,7 +42,7 @@
       "title": "One Piece",
       "mal_title": "One Piece",
       "score": 8.72,
-      "members": 2731788,
+      "members": 2731813,
       "season": null,
       "reviews": 100
     },
@@ -52,7 +52,7 @@
       "title": "Chiikawa",
       "mal_title": "Chiikawa",
       "score": 8.62,
-      "members": 26463,
+      "members": 26470,
       "season": null,
       "reviews": 8
     },
@@ -62,7 +62,7 @@
       "title": "Seihantai na Kimi to Boku 2nd Season",
       "mal_title": "Seihantai na Kimi to Boku 2nd Season",
       "score": 8.51,
-      "members": 120635,
+      "members": 120688,
       "season": null,
       "reviews": 18
     },
@@ -72,7 +72,7 @@
       "title": "Shiguang Dailiren III",
       "mal_title": "Shiguang Dailiren III",
       "score": 8.51,
-      "members": 39409,
+      "members": 39422,
       "season": null,
       "reviews": 2
     },
@@ -82,7 +82,7 @@
       "title": "Xian Ni",
       "mal_title": "Xian Ni",
       "score": 8.49,
-      "members": 12988,
+      "members": 12989,
       "season": null,
       "reviews": 13
     },
@@ -92,7 +92,7 @@
       "title": "Tian Guan Cifu Short Films",
       "mal_title": "Tian Guan Cifu Short Films",
       "score": 8.47,
-      "members": 12588,
+      "members": 12589,
       "season": null,
       "reviews": 0
     },
