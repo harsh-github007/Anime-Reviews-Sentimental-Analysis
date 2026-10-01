@@ -6,6 +6,31 @@ Can an automatic sentiment tool tell whether an anime review is positive? Every 
 
 > **Results:** [`results/results.md`](results/results.md), refreshed on the 1st of every month.
 
+## Interactive frontend
+
+![Anime sentiment research frontend](assets/screenshot.png)
+
+A cinematic cherry-blossom interface presents the saved Python analysis results, with:
+
+- Reviewer verdict distributions and the gap between word polarity and recommendation.
+- Searchable anime titles, a minimum-review filter, and accessible title detail dialogs.
+- Model comparisons for balanced accuracy, negative-verdict recall, and ROC AUC, with default and training-fold-tuned thresholds.
+- An explicit snapshot date, sample-size caveats, methodology, and links to the saved report and Colab notebook.
+- Responsive layouts and reduced-motion support.
+
+The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 183 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews.
+
+Run the website from the repository root:
+
+```bash
+python -m http.server 8000
+# Open http://localhost:8000
+```
+
+No JavaScript dependencies or build step are required. The new Pages workflow publishes only the frontend assets and aggregate results on changes to main, and after successful monthly analysis. Set the repository’s GitHub Pages source to **GitHub Actions** to enable publishing.
+
+The hero illustration is AI-generated artwork inspired by the supplied design reference. It is decorative and does not depict any anime in the dataset.
+
 ## Why it's hard
 
 Reviews are long, and they rarely stay on one side. A review that ends "not recommended" often praises the art, the soundtrack or the first few episodes before explaining what went wrong. Methods that count positive and negative words see all that praise and call the review positive. The reviewer's verdict shows what they actually concluded.
