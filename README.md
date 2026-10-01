@@ -94,3 +94,17 @@ src/animesent/report.py     charts and results.md
 notebooks/run_analysis.ipynb
 tests/                      pytest suite on synthetic reviews
 ```
+
+## Forum discussion pipeline
+
+Collect a separate AniList discussion dataset, capped at **5,000 unique comments per anime**:
+
+```bash
+python -m animesent forum --limit 5000
+```
+
+Uses the titles in `results/anime.json`, maps MAL IDs to AniList IDs, paginates associated threads and comments, and includes nested replies. Requires `curl` and the existing Python dependencies. Checkpoints in `data/forum/` let you resume the command. Aggregate predictions go to `results/forum.json`, which powers the new Discussions section. Actual counts may be below the cap. Per-title errors are reported, and partial data is retained. Raw comment text stays in local checkpoints; the frontend only displays aggregates.
+
+VADER sentiment predictions use ±0.05 cut-offs. These comments have no verified recommendation labels and are excluded from review-model accuracy evaluation. Thread associations can include broader discussions, and VADER is primarily an English-language model.
+
+[Run the forum collection in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/design/anime-sentiment-atlas/notebooks/run_forum.ipynb). CPU is sufficient. The notebook supports Google Drive checkpoints and downloads aggregate results.

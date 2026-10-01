@@ -10,3 +10,7 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 .DS_Store
+
+.venv-forum/
+work/forum-collection.log
+work/forum-collection.pid
