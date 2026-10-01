@@ -48,3 +48,14 @@ document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',(
 $('close').addEventListener('click',()=>$('details').close());
 $('details').addEventListener('click',e=>{if(e.target===$('details'))$('details').close();});
 load();
+
+async function loadForum() {
+  try {
+    const response = await fetch('results/forum.json');
+    if (!response.ok) throw Error('No discussion snapshot yet.');
+    const data = await response.json();
+    $('forumStatus').textContent = `${data.source} · ${data.anime.reduce((n,a)=>n+a.comments,0).toLocaleString()} comments collected · cap ${data.limit_per_anime.toLocaleString()} per anime · VADER predictions`;
+    $('forumTitles').innerHTML = data.anime.map(a=>`<tr><td>${escape(a.title)}${a.error ? ' · collection interrupted' : !a.complete ? ' · collecting' : ''}</td><td>${a.comments.toLocaleString()}</td>${['Positive','Neutral','Negative'].map(label=>`<td>${a.comments ? pct(a.counts[label]/a.comments) : '—'}</td>`).join('')}</tr>`).join('');
+  } catch(e) { $('forumStatus').textContent = 'Discussion collection is ready to run. No forum results have been published yet.'; }
+}
+loadForum();

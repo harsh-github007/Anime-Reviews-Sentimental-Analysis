@@ -1,0 +1,129 @@
+{
+  "source": "AniList forum discussions",
+  "limit_per_anime": 5000,
+  "model": "VADER",
+  "labels": "Predicted sentiment; no human ground-truth labels",
+  "anime": [
+    {
+      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "anime_id": 61469,
+      "comments": 510,
+      "counts": {
+        "Positive": 219,
+        "Neutral": 185,
+        "Negative": 106
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Bleach: Sennen Kessen-hen - Kashin-tan",
+      "anime_id": 60636,
+      "comments": 363,
+      "counts": {
+        "Positive": 166,
+        "Neutral": 89,
+        "Negative": 108
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "One Piece",
+      "anime_id": 21,
+      "comments": 5000,
+      "counts": {
+        "Positive": 2590,
+        "Neutral": 1461,
+        "Negative": 949
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Chiikawa",
+      "anime_id": 50250,
+      "comments": 7,
+      "counts": {
+        "Positive": 2,
+        "Neutral": 4,
+        "Negative": 1
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Shiguang Dailiren III",
+      "anime_id": 61607,
+      "comments": 89,
+      "counts": {
+        "Positive": 44,
+        "Neutral": 20,
+        "Negative": 25
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Seihantai na Kimi to Boku 2nd Season",
+      "anime_id": 63832,
+      "comments": 347,
+      "counts": {
+        "Positive": 220,
+        "Neutral": 64,
+        "Negative": 63
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Xian Ni",
+      "anime_id": 55809,
+      "comments": 1,
+      "counts": {
+        "Positive": 0,
+        "Neutral": 1,
+        "Negative": 0
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Tian Guan Cifu Short Films",
+      "anime_id": 60988,
+      "comments": 0,
+      "counts": {
+        "Positive": 0,
+        "Neutral": 0,
+        "Negative": 0
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Doupo Cangqiong: Nian Fan",
+      "anime_id": 51039,
+      "comments": 16,
+      "counts": {
+        "Positive": 10,
+        "Neutral": 4,
+        "Negative": 2
+      },
+      "complete": true,
+      "error": null
+    },
+    {
+      "title": "Tunshi Xingkong 4th Season",
+      "anime_id": 56524,
+      "comments": 0,
+      "counts": {
+        "Positive": 0,
+        "Neutral": 0,
+        "Negative": 0
+      },
+      "complete": true,
+      "error": null
+    }
+  ],
+  "updated": "2026-10-01T23:32:35.996692+00:00"
+}

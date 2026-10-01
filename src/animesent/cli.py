@@ -19,6 +19,9 @@ from .report import report
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else list(argv)
+    if argv and argv[0] == "forum":
+        from .forum import main as forum_main
+        return forum_main(argv[1:])
     if argv and argv[0] == "scrape":
         from .scrape import main as scrape_main
         return scrape_main(argv[1:])
