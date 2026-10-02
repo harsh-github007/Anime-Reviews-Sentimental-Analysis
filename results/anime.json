@@ -1,5 +1,5 @@
 {
-  "scraped": "2026-10-01T23:40:05Z",
+  "scraped": "2026-10-02T03:29:49Z",
   "source": "MyAnimeList (MyAnimeList chart page, MyAnimeList review pages)",
   "chart": "top airing",
   "min_reviews": 0,
@@ -12,7 +12,7 @@
       "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "mal_title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "score": 9.06,
-      "members": 240292,
+      "members": 240350,
       "season": null,
       "reviews": 3
     },
@@ -22,7 +22,7 @@
       "title": "Bleach: Sennen Kessen-hen - Kashin-tan",
       "mal_title": "Bleach: Sennen Kessen-hen - Kashin-tan",
       "score": 9.02,
-      "members": 173007,
+      "members": 173054,
       "season": null,
       "reviews": 31
     },
@@ -32,7 +32,7 @@
       "title": "One Piece",
       "mal_title": "One Piece",
       "score": 8.72,
-      "members": 2732400,
+      "members": 2732429,
       "season": null,
       "reviews": 100
     },
@@ -42,7 +42,7 @@
       "title": "Chiikawa",
       "mal_title": "Chiikawa",
       "score": 8.63,
-      "members": 26565,
+      "members": 26577,
       "season": null,
       "reviews": 8
     },
@@ -52,7 +52,7 @@
       "title": "Seihantai na Kimi to Boku 2nd Season",
       "mal_title": "Seihantai na Kimi to Boku 2nd Season",
       "score": 8.51,
-      "members": 121586,
+      "members": 121657,
       "season": null,
       "reviews": 18
     },
@@ -62,7 +62,7 @@
       "title": "Shiguang Dailiren III",
       "mal_title": "Shiguang Dailiren III",
       "score": 8.51,
-      "members": 39591,
+      "members": 39608,
       "season": null,
       "reviews": 4
     },
@@ -72,7 +72,7 @@
       "title": "Xian Ni",
       "mal_title": "Xian Ni",
       "score": 8.49,
-      "members": 13006,
+      "members": 13007,
       "season": null,
       "reviews": 13
     },
@@ -82,7 +82,7 @@
       "title": "Tian Guan Cifu Short Films",
       "mal_title": "Tian Guan Cifu Short Films",
       "score": 8.47,
-      "members": 12603,
+      "members": 12605,
       "season": null,
       "reviews": 0
     },
