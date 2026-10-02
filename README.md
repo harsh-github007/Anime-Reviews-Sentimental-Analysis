@@ -8,7 +8,9 @@ Can an automatic sentiment tool tell whether an anime review is positive? Every 
 
 ## Interactive frontend
 
-![Anime sentiment research frontend](assets/screenshot.png)
+![Anime sentiment research frontend](assets/screenshot.jpg)
+
+![Forum sentiment results across 12,337 comments](assets/discussions.jpg)
 
 A cinematic cherry-blossom interface presents the saved Python analysis results, with:
 
