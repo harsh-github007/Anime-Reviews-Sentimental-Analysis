@@ -2,7 +2,9 @@
 
 Can an automatic sentiment tool tell whether an anime review is positive? Every review on MyAnimeList carries the reviewer's own verdict: **Recommended**, **Mixed Feelings** or **Not Recommended**. This project downloads the reviews of the ten best-scored anime airing on MyAnimeList each month, uses those verdicts as ground truth, and measures how well common sentiment methods agree with them.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_analysis.ipynb)
+[![Analyse saved comments in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/analyze_drive_comments.ipynb)
+
+[Live website](https://harsh-github007.github.io/Anime-Reviews-Sentimental-Analysis/) · [Review-verdict analysis notebook](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_analysis.ipynb)
 
 > **Results:** [`results/results.md`](results/results.md), refreshed on the 1st of every month.
 
@@ -20,7 +22,7 @@ A cinematic cherry-blossom interface presents the saved Python analysis results,
 - An explicit snapshot date, sample-size caveats, methodology, and links to the saved report and Colab notebook.
 - Responsive layouts and reduced-motion support.
 
-The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 183 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews.
+The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 185 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews.
 
 Run the website from the repository root:
 
@@ -76,7 +78,7 @@ python -m animesent --data data/reviews.csv --min-reviews 20
 python -m pytest                                      # 28 tests on synthetic reviews, a fake API and sample pages
 ```
 
-**In Colab:** click the badge above. It downloads this month's top 10 and runs the analysis, or analyses your own reviews file from Google Drive. Turn on a GPU to include SiEBERT.
+**In Colab:** the badge opens the Drive-only forum analysis. It reads raw JSON comments from `MyDrive/AnimeForum/checkpoints` and generates fresh VADER results without scraping; CPU is sufficient. For labelled review evaluation, use the [review-verdict notebook](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_analysis.ipynb). SiEBERT is optional in that separate notebook.
 
 Outputs go to `results/`: `results.md`, `metrics.json`, `by_show.csv`, `anime.json` (the chosen anime) and three charts. They hold aggregate numbers only, no review text or usernames.
 
@@ -99,7 +101,9 @@ tests/                      pytest suite on synthetic reviews
 
 ## Forum discussion pipeline
 
-Collect a separate AniList discussion dataset, capped at **5,000 unique comments per anime**:
+[Analyse saved Drive comments in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/analyze_drive_comments.ipynb) — uses your existing JSON checkpoints; no new collection required.
+
+Collect a separate AniList and MyAnimeList discussion dataset, capped at **5,000 unique comments per anime**:
 
 ```bash
 python -m animesent forum --limit 5000
@@ -109,11 +113,11 @@ Uses the titles in `results/anime.json`, maps MAL IDs to AniList IDs, paginates 
 
 VADER sentiment predictions use ±0.05 cut-offs. These comments have no verified recommendation labels and are excluded from review-model accuracy evaluation. Thread associations can include broader discussions, and VADER is primarily an English-language model.
 
-[Run the forum collection in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/design/anime-sentiment-atlas/notebooks/run_forum.ipynb). CPU is sufficient. The notebook supports Google Drive checkpoints and downloads aggregate results.
+[Run the forum collection in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_forum.ipynb). CPU is sufficient. The notebook supports Google Drive checkpoints and downloads aggregate results.
 
 ### Broader forum coverage
 
-The forum command now defaults to `--sources both`. Set `MAL_CLIENT_ID` privately or enter it in the Colab notebook's masked prompt. Register an app at https://myanimelist.net/apiconfig; only the Client ID is needed, not the Client Secret. Jikan discovers anime-linked MAL topics; the official MAL API paginates their posts. If either service is unavailable, checkpoints and existing AniList results survive, and per-source status reports the limitation. The combined cap remains 5,000, with AniList sampled first. Posts are deduplicated by ID within each source; cross-platform copies are not detected.
+The forum command now defaults to `--sources both`. No API key is required for public-page collection. Optionally set `MAL_CLIENT_ID` privately to use the official MAL API; Jikan then discovers anime-linked topics. If either service is unavailable, checkpoints and existing AniList results survive, and per-source status reports the limitation. The combined cap remains 5,000, with AniList sampled first. Posts are deduplicated by ID within each source; cross-platform copies are not detected.
 
 `--min-comments 100` flags small samples without replacing your chosen titles. Zero-result titles display “No discussions found in collected sources.” Changing the target title list is explicit through `--titles`; no titles are silently substituted.
 
