@@ -10,11 +10,11 @@ Can an automatic sentiment tool tell whether an anime review is positive? Every 
 
 ## Interactive frontend
 
-![Anime sentiment research frontend](assets/screenshot.jpg)
+![Saved anime review coverage](assets/screenshot.jpg)
 
 ![Forum sentiment results across 12,337 comments](assets/discussions.jpg)
 
-A cinematic cherry-blossom interface presents the saved Python analysis results, with:
+A research interface presents the saved Python analysis results, with:
 
 - Reviewer verdict distributions and the gap between word polarity and recommendation.
 - Searchable anime titles, a minimum-review filter, and accessible title detail dialogs.
@@ -22,7 +22,7 @@ A cinematic cherry-blossom interface presents the saved Python analysis results,
 - An explicit snapshot date, sample-size caveats, methodology, and links to the saved report and Colab notebook.
 - Responsive layouts and reduced-motion support.
 
-The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 185 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews.
+The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 186 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews. One Piece contributes 100 of 186 reviews (53.8%), so overall results are strongly influenced by that title.
 
 Run the website from the repository root:
 
@@ -33,7 +33,6 @@ python -m http.server 8000
 
 No JavaScript dependencies or build step are required. The new Pages workflow publishes only the frontend assets and aggregate results on changes to main, and after successful monthly analysis. Set the repository’s GitHub Pages source to **GitHub Actions** to enable publishing.
 
-The hero illustration is AI-generated artwork inspired by the supplied design reference. It is decorative and does not depict any anime in the dataset.
 
 ## Why it's hard
 
@@ -99,26 +98,8 @@ notebooks/run_analysis.ipynb
 tests/                      pytest suite on synthetic reviews
 ```
 
-## Forum discussion pipeline
+## Saved forum analysis
 
-[Analyse saved Drive comments in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/analyze_drive_comments.ipynb) — uses your existing JSON checkpoints; no new collection required.
+The site also displays saved AniList/MyAnimeList discussion aggregates, separate from labelled review evaluation. VADER predictions describe the collected text; they are not verified recommendation labels. [Analyse existing Drive checkpoints](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/analyze_drive_comments.ipynb) without collecting new data.
 
-Collect a separate AniList and MyAnimeList discussion dataset, capped at **5,000 unique comments per anime**:
-
-```bash
-python -m animesent forum --limit 5000
-```
-
-Uses the titles in `results/anime.json`, maps MAL IDs to AniList IDs, paginates associated threads and comments, and includes nested replies. Requires `curl` and the existing Python dependencies. Checkpoints in `data/forum/` let you resume the command. Aggregate predictions go to `results/forum.json`, which powers the new Discussions section. Actual counts may be below the cap. Per-title errors are reported, and partial data is retained. Raw comment text stays in local checkpoints; the frontend only displays aggregates.
-
-VADER sentiment predictions use ±0.05 cut-offs. These comments have no verified recommendation labels and are excluded from review-model accuracy evaluation. Thread associations can include broader discussions, and VADER is primarily an English-language model.
-
-[Run the forum collection in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/main/notebooks/run_forum.ipynb). CPU is sufficient. The notebook supports Google Drive checkpoints and downloads aggregate results.
-
-### Broader forum coverage
-
-The forum command now defaults to `--sources both`. No API key is required for public-page collection. Optionally set `MAL_CLIENT_ID` privately to use the official MAL API; Jikan then discovers anime-linked topics. If either service is unavailable, checkpoints and existing AniList results survive, and per-source status reports the limitation. The combined cap remains 5,000, with AniList sampled first. Posts are deduplicated by ID within each source; cross-platform copies are not detected.
-
-`--min-comments 100` flags small samples without replacing your chosen titles. Zero-result titles display “No discussions found in collected sources.” Changing the target title list is explicit through `--titles`; no titles are silently substituted.
-
-Without `MAL_CLIENT_ID`, the collector reads public MAL forum pages directly, with a three-second pause and explicit errors for blocked or changed markup. This requires no account setup. Public discovery uses topics shown on the anime forum listing; it is not a guarantee of every historical thread.
+New forum collection requires checking source permissions first. See [collection access and implementation notes](docs/forum-collection.md). The scraper is not presented as an approved data source.
