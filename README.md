@@ -22,7 +22,7 @@ A research interface presents the saved Python analysis results, with:
 - An explicit snapshot date, sample-size caveats, methodology, and links to the saved report and Colab notebook.
 - Responsive layouts and reduced-motion support.
 
-The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 185 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews. One Piece contributes 100 of 185 reviews (54.1%), so overall results are strongly influenced by that title.
+The frontend uses `results/metrics.json` and `results/anime.json` directly. It does not train models, run live inference, or collect review text. The existing Python pipeline and monthly workflow remain the source of the analysis. The current saved snapshot has 186 reviews across 9 reviewed titles; the selected chart contains 10 titles, one without collected reviews. One Piece contributes 100 of 186 reviews (53.8%), so overall results are strongly influenced by that title.
 
 Run the website from the repository root:
 

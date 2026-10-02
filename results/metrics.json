@@ -1,120 +1,120 @@
 {
   "data": {
-    "rows": 185,
+    "rows": 186,
     "unknown_tag": 0,
     "unknown_tag_examples": [],
     "empty_text": 0,
     "duplicates": 0,
-    "kept": 185
+    "kept": 186
   },
   "counts": {
     "Recommended": 123,
     "Mixed Feelings": 25,
-    "Not Recommended": 37
+    "Not Recommended": 38
   },
-  "reviews": 185,
+  "reviews": 186,
   "titles": 9,
   "median_words": {
     "Recommended": 202.0,
     "Mixed Feelings": 289.0,
-    "Not Recommended": 396.0
+    "Not Recommended": 392.5
   },
   "original": {
-    "textblob_positive_share": 0.918918918918919,
-    "textblob_negative_share": 0.07567567567567568,
-    "textblob_neutral_share": 0.005405405405405406,
-    "actual_recommended_share": 0.6648648648648648,
-    "not_recommended_called_positive": 0.7837837837837838
+    "textblob_positive_share": 0.9193548387096774,
+    "textblob_negative_share": 0.07526881720430108,
+    "textblob_neutral_share": 0.005376344086021506,
+    "actual_recommended_share": 0.6612903225806451,
+    "not_recommended_called_positive": 0.7894736842105263
   },
   "binary": {
-    "n": 160,
+    "n": 161,
     "recommended": 123,
-    "not_recommended": 37
+    "not_recommended": 38
   },
   "methods": {
     "TextBlob": {
-      "auc": 0.8457481872116018,
+      "auc": 0.8465982028241336,
       "auc_ci": [
-        0.8170332080200501,
-        1.0
+        0.8166794410012387,
+        0.9630907131661441
       ],
       "default_cut": 0.0,
       "at_default": {
-        "balanced_accuracy": 0.5918479455064821,
-        "macro_f1": 0.6023796972663604,
-        "caught_negative": 0.21621621621621623,
+        "balanced_accuracy": 0.5890029952931108,
+        "macro_f1": 0.5975,
+        "caught_negative": 0.21052631578947367,
         "caught_positive": 0.967479674796748,
-        "called_positive": 0.925
+        "called_positive": 0.9254658385093167
       },
       "at_tuned": {
-        "balanced_accuracy": 0.7726873214678093,
-        "macro_f1": 0.7312730937185086,
-        "caught_negative": 0.7567567567567568,
+        "balanced_accuracy": 0.7758878904578519,
+        "macro_f1": 0.7354087430154481,
+        "caught_negative": 0.7631578947368421,
         "caught_positive": 0.7886178861788617,
-        "called_positive": 0.6625
+        "called_positive": 0.6583850931677019
       },
       "balanced_accuracy_ci": [
-        0.5519896466406018,
-        0.9
+        0.5466303131113412,
+        0.8261363636363632
       ]
     },
     "VADER": {
-      "auc": 0.8435508679411118,
+      "auc": 0.8472400513478818,
       "auc_ci": [
-        0.7624431818181818,
-        0.9859057971014491
+        0.7727852995706479,
+        0.9896741452991453
       ],
       "default_cut": 0.05,
       "at_default": {
-        "balanced_accuracy": 0.6918259723137772,
-        "macro_f1": 0.7194623027469316,
-        "caught_negative": 0.43243243243243246,
+        "balanced_accuracy": 0.6992939666238768,
+        "macro_f1": 0.7269643866591294,
+        "caught_negative": 0.4473684210526316,
         "caught_positive": 0.9512195121951219,
-        "called_positive": 0.8625
+        "called_positive": 0.8571428571428571
       },
       "at_tuned": {
-        "balanced_accuracy": 0.7335750384530872,
-        "macro_f1": 0.7226745102158727,
-        "caught_negative": 0.6216216216216216,
+        "balanced_accuracy": 0.7385537013264869,
+        "macro_f1": 0.7278315660058399,
+        "caught_negative": 0.631578947368421,
         "caught_positive": 0.8455284552845529,
-        "called_positive": 0.7375
+        "called_positive": 0.7329192546583851
       },
       "balanced_accuracy_ci": [
-        0.6625191408768536,
-        0.8256451231060605
+        0.6661716311527901,
+        0.8840234374999996
       ]
     },
     "Trained on verdicts": {
-      "auc": 0.7701604043067457,
+      "auc": 0.7633718442447582,
       "auc_ci": [
-        0.6663248697916667,
-        0.9946770988574267
+        0.5698660714285714,
+        0.9772983682983675
       ],
       "default_cut": 0.5,
       "at_default": {
-        "balanced_accuracy": 0.6675455943748627,
-        "macro_f1": 0.7014925373134329,
-        "caught_negative": 0.35135135135135137,
-        "caught_positive": 0.983739837398374,
-        "called_positive": 0.90625
+        "balanced_accuracy": 0.67201540436457,
+        "macro_f1": 0.7039836567926455,
+        "caught_negative": 0.3684210526315789,
+        "caught_positive": 0.975609756097561,
+        "called_positive": 0.8944099378881988
       },
       "at_tuned": {
-        "balanced_accuracy": 0.6809492419248517,
-        "macro_f1": 0.6945836315915056,
-        "caught_negative": 0.4594594594594595,
-        "caught_positive": 0.9024390243902439,
-        "called_positive": 0.81875
+        "balanced_accuracy": 0.6890243902439024,
+        "macro_f1": 0.6958888888888889,
+        "caught_negative": 0.5,
+        "caught_positive": 0.8780487804878049,
+        "called_positive": 0.7888198757763976
       },
       "balanced_accuracy_ci": [
-        0.5756845265456895,
-        0.9201751688678294
+        0.583018680737996,
+        0.8940632678132678
       ]
     }
   },
-  "best_method": "TextBlob",
+  "best_method": "VADER",
   "three_way": {
-    "macro_f1": 0.44785788923719955,
-    "balanced_accuracy": 0.45403940525891745,
+    "macro_f1": 0.4396047590239968,
+    "balanced_accuracy": 0.44801026957637996,
     "labels": [
       "Recommended",
       "Mixed Feelings",
@@ -122,9 +122,9 @@
     ],
     "confusion": [
       [
-        121,
+        120,
         0,
-        2
+        3
       ],
       [
         23,
@@ -132,7 +132,7 @@
         2
       ],
       [
-        23,
+        24,
         0,
         14
       ]
@@ -148,11 +148,11 @@
       "donghua",
       "chiikawa",
       "we",
-      "journey",
       "really",
+      "journey",
+      "feel",
       "such",
       "cute",
-      "feel",
       "masterpiece",
       "to say"
     ],
@@ -160,18 +160,18 @@
       "fight",
       "out of",
       "plot",
-      "minutes",
       "same",
+      "minutes",
       "the worst",
-      "bad",
       "worst",
+      "bad",
+      "someone",
       "over",
       "20",
-      "someone",
+      "your time",
       "then",
-      "the same",
-      "boring",
-      "point"
+      "overrated",
+      "zero"
     ]
   }
 }
