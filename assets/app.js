@@ -1,12 +1,14 @@
 const $ = id => document.getElementById(id);
 const pct = n => (n * 100).toFixed(1) + '%';
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let metrics, snapshot, mode = 'at_default';
+let metrics, snapshot, forumSnapshot, mode = 'at_default';
+const forumTitle = id => forumSnapshot?.anime.find(a => a.anime_id === id);
+const commentCount = id => forumTitle(id)?.comments.toLocaleString() ?? 'Unavailable';
 function renderTitles() {
   const q = $('search').value.trim().toLowerCase();
   const rows = snapshot.anime.filter(a => a.title.toLowerCase().includes(q) && (!$('minimum').checked || a.reviews >= 20));
   $('rowCount').textContent = `${rows.length} titles shown`;
-  $('titles').innerHTML = rows.map(a => `<tr><td><button class="title-button" data-id="${a.anime_id}">${escape(a.title)}</button></td><td>${a.score ?? '—'}</td><td>${a.reviews}</td><td><span class="arrow" aria-hidden="true">↗</span></td></tr>`).join('') || '<tr><td colspan="4">No matching titles. Try a different search or turn off the review filter.</td></tr>';
+  $('titles').innerHTML = rows.map(a => `<tr><td><button class="title-button" data-id="${a.anime_id}">${escape(a.title)}</button></td><td>${a.score ?? '—'}</td><td>${commentCount(a.anime_id)}</td><td>${a.reviews}</td><td><span class="arrow" aria-hidden="true">↗</span></td></tr>`).join('') || '<tr><td colspan="5">No matching titles. Try a different search or turn off the review filter.</td></tr>';
 }
 function renderModels() {
   const measure = $('measure').value;
@@ -20,7 +22,7 @@ function showTitle(id) {
   const a = snapshot.anime.find(a => a.anime_id === Number(id));
   if (!a) return;
   $('detailTitle').textContent = a.title;
-  $('detailBody').innerHTML = `<dl><div><dt>MyAnimeList score</dt><dd>${a.score ?? '—'} / 10</dd></div><div><dt>Collected reviews</dt><dd>${a.reviews}</dd></div><div><dt>Chart rank</dt><dd>${a.top_rank}</dd></div></dl><p>${a.reviews < 20 ? 'Small sample: this title has fewer than 20 collected reviews. Interpret its results cautiously.' : 'Collected reviews are a recent sample and may include preliminary verdicts.'}</p>`;
+  $('detailBody').innerHTML = `<dl><div><dt>MyAnimeList score</dt><dd>${a.score ?? '—'} / 10</dd></div><div><dt>Forum comments collected</dt><dd>${commentCount(a.anime_id)}</dd></div><div><dt>Collected labelled reviews</dt><dd>${a.reviews}</dd></div><div><dt>Chart rank</dt><dd>${a.top_rank}</dd></div></dl><p>${a.reviews < 20 ? 'Small sample: this title has fewer than 20 collected reviews. Interpret its results cautiously.' : 'Collected reviews are a recent sample and may include preliminary verdicts.'}</p>`;
   $('malLink').href = `https://myanimelist.net/anime/${a.anime_id}`;
   $('details').showModal();
 }
@@ -54,6 +56,8 @@ async function loadForum() {
     const response = await fetch('results/forum.json');
     if (!response.ok) throw Error('No discussion snapshot yet.');
     const data = await response.json();
+    forumSnapshot = data;
+    if (snapshot) renderTitles();
     $('forumStatus').textContent = `${data.source} · ${data.anime.reduce((n,a)=>n+a.comments,0).toLocaleString()} comments collected · cap ${data.limit_per_anime.toLocaleString()} per anime · VADER predictions`;
     $('forumTitles').innerHTML = data.anime.map(a=>`<tr><td>${escape(a.title)}${a.comments === 0 ? ' · No discussions found in collected sources' : a.comments < 100 ? ' · Small sample' : ''}<br><small>${escape(a.source_status ? Object.entries(a.source_status).map(([k,v])=>`${k}: ${v}`).join(' · ') : 'AniList only')}</small></td><td>${a.comments.toLocaleString()}</td>${['Positive','Neutral','Negative'].map(label=>`<td>${a.comments ? pct(a.counts[label]/a.comments) : '—'}</td>`).join('')}</tr>`).join('');
   } catch(e) { $('forumStatus').textContent = 'Discussion collection is ready to run. No forum results have been published yet.'; }
