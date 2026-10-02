@@ -108,3 +108,11 @@ Uses the titles in `results/anime.json`, maps MAL IDs to AniList IDs, paginates 
 VADER sentiment predictions use ±0.05 cut-offs. These comments have no verified recommendation labels and are excluded from review-model accuracy evaluation. Thread associations can include broader discussions, and VADER is primarily an English-language model.
 
 [Run the forum collection in Colab](https://colab.research.google.com/github/harsh-github007/Anime-Reviews-Sentimental-Analysis/blob/design/anime-sentiment-atlas/notebooks/run_forum.ipynb). CPU is sufficient. The notebook supports Google Drive checkpoints and downloads aggregate results.
+
+### Broader forum coverage
+
+The forum command now defaults to `--sources both`. Set `MAL_CLIENT_ID` privately or enter it in the Colab notebook's masked prompt. Register an app at https://myanimelist.net/apiconfig; only the Client ID is needed, not the Client Secret. Jikan discovers anime-linked MAL topics; the official MAL API paginates their posts. If either service is unavailable, checkpoints and existing AniList results survive, and per-source status reports the limitation. The combined cap remains 5,000, with AniList sampled first. Posts are deduplicated by ID within each source; cross-platform copies are not detected.
+
+`--min-comments 100` flags small samples without replacing your chosen titles. Zero-result titles display “No discussions found in collected sources.” Changing the target title list is explicit through `--titles`; no titles are silently substituted.
+
+Without `MAL_CLIENT_ID`, the collector reads public MAL forum pages directly, with a three-second pause and explicit errors for blocked or changed markup. This requires no account setup. Public discovery uses topics shown on the anime forum listing; it is not a guarantee of every historical thread.
