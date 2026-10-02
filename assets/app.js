@@ -55,7 +55,7 @@ async function loadForum() {
     if (!response.ok) throw Error('No discussion snapshot yet.');
     const data = await response.json();
     $('forumStatus').textContent = `${data.source} · ${data.anime.reduce((n,a)=>n+a.comments,0).toLocaleString()} comments collected · cap ${data.limit_per_anime.toLocaleString()} per anime · VADER predictions`;
-    $('forumTitles').innerHTML = data.anime.map(a=>`<tr><td>${escape(a.title)}${a.error ? ' · collection interrupted' : !a.complete ? ' · collecting' : ''}</td><td>${a.comments.toLocaleString()}</td>${['Positive','Neutral','Negative'].map(label=>`<td>${a.comments ? pct(a.counts[label]/a.comments) : '—'}</td>`).join('')}</tr>`).join('');
+    $('forumTitles').innerHTML = data.anime.map(a=>`<tr><td>${escape(a.title)}${a.comments === 0 ? ' · No discussions found in collected sources' : a.comments < 100 ? ' · Small sample' : ''}<br><small>${escape(a.source_status ? Object.entries(a.source_status).map(([k,v])=>`${k}: ${v}`).join(' · ') : 'AniList only')}</small></td><td>${a.comments.toLocaleString()}</td>${['Positive','Neutral','Negative'].map(label=>`<td>${a.comments ? pct(a.counts[label]/a.comments) : '—'}</td>`).join('')}</tr>`).join('');
   } catch(e) { $('forumStatus').textContent = 'Discussion collection is ready to run. No forum results have been published yet.'; }
 }
 loadForum();
