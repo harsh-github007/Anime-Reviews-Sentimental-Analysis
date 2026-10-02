@@ -1,8 +1,9 @@
 {
-  "source": "Forum discussions (see per-title source coverage)",
+  "source": "AniList and MyAnimeList saved forum comments",
   "limit_per_anime": 5000,
   "model": "VADER",
   "labels": "Predicted sentiment; no human ground-truth labels",
+  "updated": "2026-10-02T03:37:05.484435+00:00",
   "anime": [
     {
       "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
@@ -13,8 +14,6 @@
         "Neutral": 615,
         "Negative": 419
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 510,
         "MyAnimeList": 1740
@@ -23,6 +22,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "sufficient sample"
     },
     {
@@ -34,8 +35,6 @@
         "Neutral": 543,
         "Negative": 720
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 363,
         "MyAnimeList": 2348
@@ -44,6 +43,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "sufficient sample"
     },
     {
@@ -55,16 +56,16 @@
         "Neutral": 1461,
         "Negative": 949
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 5000,
         "MyAnimeList": 0
       },
       "source_status": {
         "AniList": "complete",
-        "MyAnimeList": "combined cap reached"
+        "MyAnimeList": "not collected"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "sufficient sample"
     },
     {
@@ -76,8 +77,6 @@
         "Neutral": 17,
         "Negative": 7
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 7,
         "MyAnimeList": 46
@@ -86,6 +85,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "small sample"
     },
     {
@@ -97,8 +98,6 @@
         "Neutral": 68,
         "Negative": 102
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 89,
         "MyAnimeList": 255
@@ -107,6 +106,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "sufficient sample"
     },
     {
@@ -118,8 +119,6 @@
         "Neutral": 251,
         "Negative": 254
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 347,
         "MyAnimeList": 1428
@@ -128,6 +127,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "sufficient sample"
     },
     {
@@ -139,8 +140,6 @@
         "Neutral": 14,
         "Negative": 19
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 1,
         "MyAnimeList": 80
@@ -149,6 +148,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "small sample"
     },
     {
@@ -160,8 +161,6 @@
         "Neutral": 15,
         "Negative": 13
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 0,
         "MyAnimeList": 60
@@ -170,6 +169,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "small sample"
     },
     {
@@ -181,8 +182,6 @@
         "Neutral": 6,
         "Negative": 10
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 16,
         "MyAnimeList": 20
@@ -191,6 +190,8 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "small sample"
     },
     {
@@ -202,8 +203,6 @@
         "Neutral": 6,
         "Negative": 11
       },
-      "complete": true,
-      "error": null,
       "source_counts": {
         "AniList": 0,
         "MyAnimeList": 27
@@ -212,8 +211,9 @@
         "AniList": "complete",
         "MyAnimeList": "complete"
       },
+      "complete": true,
+      "error": null,
       "sample_status": "small sample"
     }
-  ],
-  "updated": "2026-10-02T03:21:43.822770+00:00"
+  ]
 }
