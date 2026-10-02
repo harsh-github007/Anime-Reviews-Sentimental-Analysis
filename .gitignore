@@ -14,3 +14,6 @@ __pycache__/
 .venv-forum/
 work/forum-collection.log
 work/forum-collection.pid
+
+work/forum-expanded.log
+work/forum-expanded.pid
