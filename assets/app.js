@@ -8,7 +8,7 @@ function renderTitles() {
   const q = $('search').value.trim().toLowerCase();
   const rows = snapshot.anime.filter(a => a.title.toLowerCase().includes(q) && (!$('minimum').checked || a.reviews >= 20));
   $('rowCount').textContent = `${rows.length} titles shown`;
-  $('titles').innerHTML = rows.map(a => `<tr><td><button class="title-button" data-id="${a.anime_id}">${escape(a.title)}</button></td><td>${a.score ?? '—'}</td><td>${commentCount(a.anime_id)}</td><td>${a.reviews}</td><td><span class="arrow" aria-hidden="true">↗</span></td></tr>`).join('') || '<tr><td colspan="5">No matching titles. Try a different search or turn off the review filter.</td></tr>';
+  $('titles').innerHTML = rows.map(a => `<tr><td><button class="title-button" data-id="${a.anime_id}">${escape(a.title)}</button></td><td>${a.score ?? '—'}</td><td>${commentCount(a.anime_id)}</td><td>${a.reviews || '0 · No reviews collected'}</td><td><span class="arrow" aria-hidden="true">↗</span></td></tr>`).join('') || '<tr><td colspan="5">No matching titles. Try a different search or turn off the review filter.</td></tr>';
 }
 function renderModels() {
   const measure = $('measure').value;
@@ -34,8 +34,9 @@ async function load() {
     const date = new Date(snapshot.scraped).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'});
     $('snapshot').textContent = `SAVED SNAPSHOT · ${date} · ${snapshot.source}. Updated by the monthly analysis pipeline.`;
     $('footerDate').textContent = `Snapshot: ${date}`;
+    $('coverage').innerHTML = snapshot.anime.slice().sort((a,b)=>b.reviews-a.reviews).slice(0,4).map(a=>`<div class="coverage-row"><span>${escape(a.title)}</span><b>${a.reviews}</b></div>`).join('');
     const counts = Object.entries(metrics.counts);
-    $('heroStats').innerHTML = `<div><span>Reviews analysed</span><b>${metrics.reviews.toLocaleString()}</b></div><div><span>Titles reviewed</span><b>${metrics.titles}</b></div>` + counts.map(([name,n]) => `<div><span>${escape(name)}</span><b>${pct(n/metrics.reviews)}</b></div>`).join('');
+    $('heroStats').innerHTML = `<div><span>Reviews analysed</span><b>${metrics.reviews.toLocaleString()}</b></div><div><span>Titles with reviews</span><b>${metrics.titles}</b></div>` + counts.map(([name,n]) => `<div><span>${escape(name)}</span><b>${pct(n/metrics.reviews)}</b></div>`).join('');
     $('distribution').innerHTML = counts.map(([name,n],i) => `<span class="verdict v${i}" style="width:${n/metrics.reviews*100}%" title="${escape(name)}: ${n} reviews"></span>`).join('');
     $('verdictLegend').innerHTML = counts.map(([name,n],i) => `<div><i class="v${i}"></i><span>${escape(name)}</span><strong>${n} <small>(${pct(n/metrics.reviews)})</small></strong></div>`).join('');
     $('gap').textContent = `TextBlob labels ${pct(metrics.original.textblob_positive_share)} of all reviews positive, while ${pct(metrics.original.actual_recommended_share)} actually recommend the show. It calls ${pct(metrics.original.not_recommended_called_positive)} of Not Recommended reviews positive at its default threshold.`;
