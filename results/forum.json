@@ -1,5 +1,5 @@
 {
-  "source": "AniList forum discussions",
+  "source": "Forum discussions (see per-title source coverage)",
   "limit_per_anime": 5000,
   "model": "VADER",
   "labels": "Predicted sentiment; no human ground-truth labels",
@@ -7,26 +7,44 @@
     {
       "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
       "anime_id": 61469,
-      "comments": 510,
+      "comments": 2250,
       "counts": {
-        "Positive": 219,
-        "Neutral": 185,
-        "Negative": 106
+        "Positive": 1216,
+        "Neutral": 615,
+        "Negative": 419
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 510,
+        "MyAnimeList": 1740
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "sufficient sample"
     },
     {
       "title": "Bleach: Sennen Kessen-hen - Kashin-tan",
       "anime_id": 60636,
-      "comments": 363,
+      "comments": 2711,
       "counts": {
-        "Positive": 166,
-        "Neutral": 89,
-        "Negative": 108
+        "Positive": 1448,
+        "Neutral": 543,
+        "Negative": 720
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 363,
+        "MyAnimeList": 2348
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "sufficient sample"
     },
     {
       "title": "One Piece",
@@ -38,92 +56,164 @@
         "Negative": 949
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 5000,
+        "MyAnimeList": 0
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "combined cap reached"
+      },
+      "sample_status": "sufficient sample"
     },
     {
       "title": "Chiikawa",
       "anime_id": 50250,
-      "comments": 7,
+      "comments": 53,
       "counts": {
-        "Positive": 2,
-        "Neutral": 4,
-        "Negative": 1
+        "Positive": 29,
+        "Neutral": 17,
+        "Negative": 7
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 7,
+        "MyAnimeList": 46
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "small sample"
     },
     {
       "title": "Shiguang Dailiren III",
       "anime_id": 61607,
-      "comments": 89,
+      "comments": 344,
       "counts": {
-        "Positive": 44,
-        "Neutral": 20,
-        "Negative": 25
+        "Positive": 174,
+        "Neutral": 68,
+        "Negative": 102
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 89,
+        "MyAnimeList": 255
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "sufficient sample"
     },
     {
       "title": "Seihantai na Kimi to Boku 2nd Season",
       "anime_id": 63832,
-      "comments": 347,
+      "comments": 1775,
       "counts": {
-        "Positive": 220,
-        "Neutral": 64,
-        "Negative": 63
+        "Positive": 1270,
+        "Neutral": 251,
+        "Negative": 254
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 347,
+        "MyAnimeList": 1428
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "sufficient sample"
     },
     {
       "title": "Xian Ni",
       "anime_id": 55809,
-      "comments": 1,
+      "comments": 81,
       "counts": {
-        "Positive": 0,
-        "Neutral": 1,
-        "Negative": 0
+        "Positive": 48,
+        "Neutral": 14,
+        "Negative": 19
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 1,
+        "MyAnimeList": 80
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "small sample"
     },
     {
       "title": "Tian Guan Cifu Short Films",
       "anime_id": 60988,
-      "comments": 0,
+      "comments": 60,
       "counts": {
-        "Positive": 0,
-        "Neutral": 0,
-        "Negative": 0
+        "Positive": 32,
+        "Neutral": 15,
+        "Negative": 13
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 0,
+        "MyAnimeList": 60
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "small sample"
     },
     {
       "title": "Doupo Cangqiong: Nian Fan",
       "anime_id": 51039,
-      "comments": 16,
+      "comments": 36,
       "counts": {
-        "Positive": 10,
-        "Neutral": 4,
-        "Negative": 2
+        "Positive": 20,
+        "Neutral": 6,
+        "Negative": 10
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 16,
+        "MyAnimeList": 20
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "small sample"
     },
     {
       "title": "Tunshi Xingkong 4th Season",
       "anime_id": 56524,
-      "comments": 0,
+      "comments": 27,
       "counts": {
-        "Positive": 0,
-        "Neutral": 0,
-        "Negative": 0
+        "Positive": 10,
+        "Neutral": 6,
+        "Negative": 11
       },
       "complete": true,
-      "error": null
+      "error": null,
+      "source_counts": {
+        "AniList": 0,
+        "MyAnimeList": 27
+      },
+      "source_status": {
+        "AniList": "complete",
+        "MyAnimeList": "complete"
+      },
+      "sample_status": "small sample"
     }
   ],
-  "updated": "2026-10-02T03:02:45.339042+00:00"
+  "updated": "2026-10-02T03:21:43.822770+00:00"
 }
